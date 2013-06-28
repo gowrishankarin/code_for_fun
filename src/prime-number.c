@@ -45,30 +45,3 @@ int main() {
 		
 	}
 }
-
-/*
-int perfCalc {
-
-	Object perfData = [];
-
-
-	for(int i=10; i <= 27; i++) {
-
-		int startTime = new Date();
-		int primeCount = prime(Math.pow(2, i));
-		int endTime = new Date();
-		int data = new Object();
-
-		data.duration = endTime.getTime() - startTime.getTime();
-		data.range = Math.pow(2, i);
-		data.primeCount = primeCount;
-		perfData.push(data);
-		console.log(data);
-	}
-	console.log(perfData);
-	fs.writeFileSync("perfData.txt", JSON.stringify(perfData));
-
-}
-perfCalc();
-
-*/
