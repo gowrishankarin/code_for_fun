@@ -36,12 +36,14 @@ int main() {
 
 	for(int i = 10; i <= 30; i++) {
 		
-		timeval startTime, endTime;
+		timeval time;
 		
-		gettimeofday(&startTime, 0);
+		gettimeofday(&time, 0);
+		double startTime = time.tv_sec*1000 + double(time.tv_usec/1000.0);
 		long long primeCount = prime(pow(2, i));
-		gettimeofday(&endTime, 0);
-		std::cout << "Prime Count: " << primeCount << " Duration: " << (endTime.tv_usec - startTime.tv_usec)/1000 << std::endl;
+		gettimeofday(&time, 0);
+		double endTime = time.tv_sec*1000 + double(time.tv_usec/1000.0);
+		std::cout << " Duration: " << (endTime - startTime) << " Range: :" << pow(2,i) << " Prime Count: " << primeCount << std::endl;
 		
 	}
 }
