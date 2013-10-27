@@ -17,6 +17,20 @@ void sum(Summable *total, const vector<Summable>* values) {
     }
 }
 
+template<class T1, class T2>
+void convert_type(const vector<T1>* src_array, vector<T2>* dst_array) {
+    for(int i=0; i < src_array->size(); i++) {
+        dst_array->push_back(static_cast<T2>(src_array->at(i)));
+    }
+}
+
+template<class Printable>
+void print_array(const vector<Printable>*    array) {
+    for(int i=0; i < array->size(); i++) {
+        cout << array->at(i) << endl;
+    }
+}
+
 int main()
 {
     // Total will hold the sum of the array.
@@ -27,9 +41,15 @@ int main()
     for(int i = 0; i < N; ++i) {
        array.push_back(i);
     }
-    
-    sum(&total, &array);   
+        
+    sum(&total, &array); 
+
+    std::vector<double> dst_array;
+    convert_type(&array, &dst_array);
+
     cout << "Sum is " << total << endl;
+    cout << "Integer:"  << sizeof(array.at(0))<< endl;
+    cout << "Double:" << sizeof(dst_array.at(0)) << endl;
     
     return 0;
 }
