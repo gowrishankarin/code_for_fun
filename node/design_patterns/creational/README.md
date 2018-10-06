@@ -17,3 +17,8 @@ start - Prototype and Problem Definition
 second - Implementation of a prototype and clone methods
 
 ** clone **: Get prototype(definition) of the classs, clone the prototype and copy the attributes.
+
+### Factory
+Intent:
+Define an interface for createing an object, but let subclasses decide which class to instantiate.
+Factory method lets a class defer instantiation to subclasses.
