@@ -6,4 +6,11 @@ Conver the interface of a class into another clients expect. Adapter lets
 classes work together that couldnt otherwise because of incompatible interfaces.
 
 start - Prototype and Problem statement
-final - Adapter implementation of browser localStorage at server end. Checkout the creation and deletion of json file.
+final - Adapter implementation of browser localStorage at server end. Checkout the creation and deletion of json file. 
+
+### Proxy
+Intent:
+Provide a surrogate or placeholder for another object to controll access to it.
+
+start - Prototype and Problem Statement
+final - Proxy implementation, watch injecting 'fs' object into proxy class by caller.
