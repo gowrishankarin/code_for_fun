@@ -8,34 +8,34 @@ Gang of Four(1994)
 3. Ralph Johnson
 4. John Vlissides
 
-Creational
+Creational(5)
 1. Abstract Factory
 2. Builder
 3. Factory Method
 4. Prototype
 5. Singleton
 
-Structural
-6. Adapter
-7. Bridge
-8. Composite
-9. Decorator
-10. Facade
-11. Flyweight
-12. Proxy
+Structural(7)
+1. Adapter
+2. Bridge
+3. Composite
+4. Decorator
+5. Facade
+6. Flyweight
+7. Proxy
 
-Behavioral
-13. Chain of Responsibility
-14. Command
-15. Interpreter
-16. Iterator
-17. Mediator
-18. Memento
-19. Observer
-20. State
-21. Strategy
-22. Template Method
-23. Visitor
+Behavioral(11)
+1. Chain of Responsibility
+2. Command
+3. Interpreter
+4. Iterator
+5. Mediator
+6. Memento
+7. Observer
+8. State
+9. Strategy
+10. Template Method
+11. Visitor
 
 Javascript:
 1. ES6
