@@ -19,3 +19,6 @@ final - Proxy implementation, watch injecting 'fs' object into proxy class by ca
 Intent:
 Compose objecs into tree structures to represent part-whole hierarchies.
 Composite lets clients treat individual objects and compositions of objects uniformly.
+
+start - Prototype and Problem Statement
+final - Composite implementation, note catalog of catalog groups and catalog item. 
