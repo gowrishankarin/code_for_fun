@@ -12,3 +12,8 @@ final - Node's own Singleton Implementation
 Intent:
 Specify the kinds of object to create using prototypical instance, and create new
 objects by copying this prototype.
+
+start - Prototype and Problem Definition
+second - Implementation of a prototype and clone methods
+
+** clone **: Get prototype(definition) of the classs, clone the prototype and copy the attributes.
