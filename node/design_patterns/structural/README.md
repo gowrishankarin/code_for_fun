@@ -14,3 +14,8 @@ Provide a surrogate or placeholder for another object to controll access to it.
 
 start - Prototype and Problem Statement
 final - Proxy implementation, watch injecting 'fs' object into proxy class by caller.
+
+### Composites
+Intent:
+Compose objecs into tree structures to represent part-whole hierarchies.
+Composite lets clients treat individual objects and compositions of objects uniformly.
