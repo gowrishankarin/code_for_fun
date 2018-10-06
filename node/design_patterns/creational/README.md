@@ -25,3 +25,11 @@ Factory method lets a class defer instantiation to subclasses.
 
 start - Protoype and Problem Definition
 final - Factory implementation, check payDay method.
+
+### Builder
+Intent:
+Separate the construction of a complex object from its representation so that the same construction process can create different representaions.
+This is to solve the "Anti Pattern" telescoping constructors.
+
+start - Prototype and Problem Definition
+final - Wow, builder is building the object.
