@@ -1,8 +1,13 @@
 ## Behavioral
 
 ### Chain of Responsibility
-Intet:
+Intent:
 Avoid coupling the sender of a request to its receiver by giving more than one object a change to handle the request. Chain the receiving objects and pass the request along the chain.
 
 start - Prototype and Problem Statement
 final - Implementation of CoR, checkout the chaining logic in find function.
+
+### Command
+Intent:
+Encapsulate a request as an object, thereby letting you parameterize with different requests, queue or log requests, and support undoable operations.
+
