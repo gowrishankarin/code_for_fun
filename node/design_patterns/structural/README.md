@@ -26,3 +26,6 @@ final - Composite implementation, note catalog of catalog groups and catalog ite
 ### Docorators
 Intent:
 Attach additional responsibilities to an object dynamically. Decorators provide a flexible alternative to subclassing for extending functionality.
+
+start - Prototype and Problem Statement
+final - Base class is enhanced with new classes without subclassing.
