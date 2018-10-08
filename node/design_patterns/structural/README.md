@@ -22,3 +22,7 @@ Composite lets clients treat individual objects and compositions of objects unif
 
 start - Prototype and Problem Statement
 final - Composite implementation, note catalog of catalog groups and catalog item. 
+
+### Docorators
+Intent:
+Attach additional responsibilities to an object dynamically. Decorators provide a flexible alternative to subclassing for extending functionality.
