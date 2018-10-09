@@ -11,3 +11,6 @@ final - Implementation of CoR, checkout the chaining logic in find function.
 Intent:
 Encapsulate a request as an object, thereby letting you parameterize with different requests, queue or log requests, and support undoable operations.
 
+start - Prototype and Problem Statement
+second - Creation of commands and execution flow.
+final - Enhancements to the commands.
