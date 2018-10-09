@@ -21,3 +21,15 @@ Provide a way to access the elements of an aggregate object sequentially without
 
 start - Prototype and Problem Statement
 final - Iterator implementation, check [...] while reversing the list for retrieving last element.
+
+### Observer
+Intent:
+Define a one to many dependency between objects so that when one object changes state, all its dependents are notified and updated automatically.
+
+start - Prototype and Problem Statement
+final - Lol... Look again and again.
+
+
+### Strategy
+Intent:
+Define a family of algorithms, encapsulate each one, and make them interchangeable. Strategy lets the algorithm vary independently from clients that use it.
