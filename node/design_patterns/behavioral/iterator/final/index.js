@@ -43,4 +43,4 @@ process.stdin.on('keypress', (str, key) => {
                 process.exit()
             }
     }
-})
+});

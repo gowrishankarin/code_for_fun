@@ -18,3 +18,6 @@ final - Enhancements to the commands.
 ### Iterator
 Intent:
 Provide a way to access the elements of an aggregate object sequentially without exposing its underlying representation.
+
+start - Prototype and Problem Statement
+final - Iterator implementation, check [...] while reversing the list for retrieving last element.
