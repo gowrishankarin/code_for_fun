@@ -14,3 +14,7 @@ Encapsulate a request as an object, thereby letting you parameterize with differ
 start - Prototype and Problem Statement
 second - Creation of commands and execution flow.
 final - Enhancements to the commands.
+
+### Iterator
+Intent:
+Provide a way to access the elements of an aggregate object sequentially without exposing its underlying representation.
