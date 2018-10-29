@@ -13,7 +13,7 @@ function handleOnMessage(message) {
 
     rtm.sendMessage('This is test message', message.channel, function messageSent() {
 
-    })
+    });
 }
 
 function addAuthenticatedHandler(rtm, handler) {
