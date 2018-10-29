@@ -19,18 +19,26 @@ function handleOnMessage(message) {
         if(!res.intent) {
             return rtm.sendMessage(
                 "Sorry, I do not know what you are talking about", 
-                message
+                message.channel,
+                function messageSent() {
+
+                }
             );
         } else if(res.intent[0].value == 'time' && res.location) {
             return rtm.sendMessage(
                 `I don't yet know the time in ${res.location[0].value}`, 
-                message
+                message.channel,
+                function messageSent() {
+                    
+                }
             );
         } else {
-            console.log(res);
             return rtm.sendMessage(
-                `I don't yet know the time in ${res.location[0].value}`, 
-                message
+                `Sorry, I don't yet know what you are talking`, 
+                message.channel,
+                function messageSent() {
+
+                }
             );
         }
 
