@@ -10,42 +10,36 @@ function handleOnAuthenticated(rtmStartData) {
 }
 
 function handleOnMessage(message) {
-    nlp.ask(message.text, (err, res) => {
-        if(err) {
-            console.log('ASK Error: ' + err);
-            return;
-        }
+    if (message.text.toLowerCase().includes('microservices')) {
+        nlp.ask(message.text, (err, res) => {
+            if (err) {
+                console.log('ASK Error: ' + err);
+                return;
+            }
 
-        if(!res.intent) {
-            return rtm.sendMessage(
-                "Sorry, I do not know what you are talking about", 
-                message.channel,
-                function messageSent() {
-
+            try {
+                if(!res.intent || !res.intent[0] || !res.intent[0].value) {
+                    throw new Error("Could not extract intent.")
                 }
-            );
-        } else if(res.intent[0].value == 'time' && res.location) {
-            return rtm.sendMessage(
-                `I don't yet know the time in ${res.location[0].value}`, 
-                message.channel,
-                function messageSent() {
-                    
-                }
-            );
-        } else {
-            return rtm.sendMessage(
-                `Sorry, I don't yet know what you are talking`, 
-                message.channel,
-                function messageSent() {
 
-                }
-            );
-        }
+                const intent  = require('./intents/' + res.intent[0].value + 'Intent');
 
-        rtm.sendMessage('Sorry, I did not understand', message.channel, function messageSent() {
+                intent.process(res, function(error, response) {
+                    if(error) {
+                        console.log(error.message);
+                        return;
+                    }
 
+                    return rtm.sendMessage(response, message.channel);
+                });
+            } catch(err) {
+                console.log(err);
+                console.log(res);
+                rtm.sendMessage("Sorry, I do not know what you are talking about!", 
+                    message.channel);
+            }
         });
-    });
+    }
 
 
 }
@@ -63,7 +57,7 @@ module.exports.init = function slackClient(token, logLevel, nlpClient) {
     nlp = nlpClient;
 
     addAuthenticatedHandler(rtm, handleOnAuthenticated);
-    rtm.on('message',  handleOnMessage);
+    rtm.on('message', handleOnMessage);
 
     return rtm;
 }
