@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 //import 'package:flutter/rendering.dart';
 
-import './product_manager.dart';
+import './pages/home.dart';
 
 void main() {
   // debugPaintSizeEnabled = true;
@@ -13,12 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('First Exercise'),
-        ),
-        body: ProductManager(),
-      ),
+      home: HomePage(),
     );
   }
 
