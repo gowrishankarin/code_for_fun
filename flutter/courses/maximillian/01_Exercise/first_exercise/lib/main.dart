@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 //import 'package:flutter/rendering.dart';
 
-import './pages/home.dart';
+import './pages/auth.dart';
 
 void main() {
   // debugPaintSizeEnabled = true;
@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return MaterialApp(
-      home: HomePage(),
+      home: AuthPage(),
     );
   }
 
