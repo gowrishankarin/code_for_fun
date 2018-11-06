@@ -2,42 +2,41 @@ import 'package:flutter/material.dart';
 import './products.dart';
 import './product_control.dart';
 
-class ProductManager extends StatefulWidget {
+class ProductManager extends StatelessWidget {
 
-  final Map startingProduct;
+  final List<Map<String, String>> products;
+  final Function addProduct;
+  final Function deleteProduct;
 
-  ProductManager({this.startingProduct});
+  ProductManager(this.products, this.addProduct, this.deleteProduct);
 
-  @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return _ProductManagerState();
-  }
-}
+//   final Map startingProduct;
 
-class _ProductManagerState extends State<ProductManager> {
-  List<Map> _products = [];
+//   ProductManager({this.startingProduct});
 
-  @override
-    void initState() {
-      if(widget.startingProduct != null) {
-        _products = [widget.startingProduct];
-      }
-      
-      super.initState();
-    }
+//   @override
+//   State<StatefulWidget> createState() {
+//     // TODO: implement createState
+//     return _ProductManagerState();
+//   }
+// }
 
-  void _addProduct(Map<String, String> product) {
-    setState(() {
-      _products.add(product);
-    });
-  }
+// class _ProductManagerState extends State<ProductManager> {
+//   List<Map> _products = [];
 
-  void _deleteProduct(int index) {
-    setState(() {
-      _products.removeAt(index);
-    });
-  }
+  // @override
+  // void initState() {
+  //   if(widget.startingProduct != null) {
+  //     _products = [widget.startingProduct];
+  //   }
+    
+  //   super.initState();
+  // }
+
+  // @override
+  // void didUpdateWidget(ProductManager oldWidget) {
+  //   super.didUpdateWidget(oldWidget);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -45,9 +44,9 @@ class _ProductManagerState extends State<ProductManager> {
     return Column(children: [
       Container(
         margin: EdgeInsets.all(10.0),
-        child: ProductControl(_addProduct),
+        child: ProductControl(addProduct),
       ),
-      Expanded(child: Products(_products, deleteProduct: _deleteProduct))
+      Expanded(child: Products(products, deleteProduct: deleteProduct))
     ],);
   }
 }
