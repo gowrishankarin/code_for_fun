@@ -32,29 +32,37 @@ class _MyAppState extends State<MyApp> {
       _products.removeAt(index);
     });
   }
-  
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return MaterialApp(
       //home: AuthPage(),
       routes: {
-        '/': (BuildContext context) => ProductsPage(_products, _addProduct, _deleteProduct),
+        '/': (BuildContext context) =>
+            ProductsPage(_products, _addProduct, _deleteProduct),
         '/admin': (BuildContext context) => ProductAdminPage()
       },
       onGenerateRoute: (RouteSettings settings) {
         final List<String> pathElements = settings.name.split('/');
-        if(pathElements[0] != '') {
+        if (pathElements[0] != '') {
           return null;
-        } 
+        }
 
-        if(pathElements[1] == 'product') {
+        if (pathElements[1] == 'product') {
           final int index = int.parse(pathElements[2]);
-          return MaterialPageRoute<bool>(builder: (BuildContext context) => ProductPage(
-            _products[index]['title'], _products[index]['image']
-          ),);
+          return MaterialPageRoute<bool>(
+            builder: (BuildContext context) => ProductPage(
+                _products[index]['title'], _products[index]['image']),
+          );
         }
         return null;
+      },
+      onUnknownRoute: (RouteSettings settings) {
+        return MaterialPageRoute(
+          builder: (BuildContext context) =>
+              ProductsPage(_products, _addProduct, _deleteProduct),
+        );
       },
     );
   }
