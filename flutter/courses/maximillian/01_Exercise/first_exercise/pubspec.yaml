@@ -60,7 +60,11 @@ flutter:
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
-  #     fonts:
+  fonts:
+    - family: Oswald
+      fonts:
+        - asset: assets/Oswald-Bold.ttf
+          weight: 700
   #       - asset: fonts/TrajanPro.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
