@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 class ProductPage extends StatelessWidget {
-  final String title;
-  final String imageUrl;
+  final Map<String, dynamic> product;
 
-  ProductPage(this.title, this.imageUrl);
+  ProductPage(this.product);
 
   _showWarningDialog(BuildContext context) {
     showDialog(
@@ -44,20 +43,55 @@ class ProductPage extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(title),
+          title: Text(product['title']),
         ),
         body: Center(
           child: Column(
             //mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Image.asset(imageUrl),
-              Container(padding: EdgeInsets.all(10.0), child: Text('Details')),
+              Image.asset(product['image']),
               Container(
                 padding: EdgeInsets.all(10.0),
-                child: RaisedButton(
-                  color: Theme.of(context).accentColor,
-                  child: Text('DELETE'),
+                child: Text(
+                  product['title'],
+                  style: TextStyle(
+                    fontSize: 26.0,
+                    fontFamily: 'Oswald',
+                  ),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    'Union Square, San Francisco',
+                    style: TextStyle(fontFamily: 'Oswald'),
+                  ),
+                  Container(
+                      margin: EdgeInsets.symmetric(horizontal: 5.0),
+                      child: Text(
+                        '|',
+                        style: TextStyle(color: Colors.grey),
+                      )),
+                  Text(
+                    '\$' + product['price'].toString(),
+                    style: TextStyle(fontFamily: 'Oswald', color: Colors.grey),
+                  )
+                ],
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 10.0),
+                child: Text(
+                  product['description'],
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.all(10.0),
+                child: IconButton(
+                  icon: Icon(Icons.delete),
+                  //child: Text('DELETE'),
                   onPressed: () => _showWarningDialog(context),
                 ),
               ),
