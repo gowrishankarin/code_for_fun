@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../product_manager.dart';
+import '../widgets/products/products.dart';
 
 // This is home page.
 class ProductsPage extends StatelessWidget {
@@ -33,7 +33,7 @@ class ProductsPage extends StatelessWidget {
           onPressed: () {},
         )
       ]),
-      body: ProductManager(products),
+      body: Products(products),
     );
   }
 }
