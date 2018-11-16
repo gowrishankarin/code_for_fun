@@ -42,6 +42,10 @@ class _MyAppState extends State<MyApp> {
         brightness: Brightness.light,
         primarySwatch: Colors.lightGreen,
         accentColor: Colors.green,
+        buttonColor: Colors.green,
+        //buttonTheme: ButtonThemeData(
+        //  textTheme: TextTheme()
+        //)
         //fontFamily: 'Oswald'
       ),
       routes: {
