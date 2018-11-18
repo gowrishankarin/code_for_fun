@@ -4,9 +4,10 @@ import 'dart:async';
 import '../widgets/ui_elements/title_default.dart';
 import '../widgets/products/address_tag.dart';
 import '../widgets/products/price_tag.dart';
+import '../models/product.dart';
 
 class ProductPage extends StatelessWidget {
-  final Map<String, dynamic> product;
+  final Product product;
 
   ProductPage(this.product);
 
@@ -21,7 +22,7 @@ class ProductPage extends StatelessWidget {
               '|',
               style: TextStyle(color: Colors.grey),
             )),
-        PriceTag(product[ 'price'].toString())
+        PriceTag(product.price.toString())
       ],
     );
   }
@@ -63,23 +64,23 @@ class ProductPage extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(product['title']),
+          title: Text(product.title),
         ),
         body: Center(
           child: Column(
             //mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Image.asset(product['image']),
+              Image.asset(product.image),
               Container(
                 padding: EdgeInsets.all(10.0),
-                child: TitleDefault(product['title']),
+                child: TitleDefault(product.image),
               ),
               _buildAddressPriceRow(),
               Container(
                 margin: EdgeInsets.only(top: 10.0),
                 child: Text(
-                  product['description'],
+                  product.description,
                   textAlign: TextAlign.center,
                 ),
               ),

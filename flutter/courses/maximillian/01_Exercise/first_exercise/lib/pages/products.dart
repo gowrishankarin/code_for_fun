@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../widgets/products/products.dart';
-
+import '../models/product.dart';
 // This is home page.
 class ProductsPage extends StatelessWidget {
-  final List<Map<String, dynamic>> products;
+  final List<Product> products;
   ProductsPage(this.products);
 
   Widget _buildSideDrawer(BuildContext context) {
