@@ -22,6 +22,7 @@ class ProductCard extends StatelessWidget {
           width: 8.0,
         ),
         PriceTag(product.price.toString()),
+        
       ],
     );
   }
@@ -69,7 +70,8 @@ class ProductCard extends StatelessWidget {
             child: _buildTitlePriceRow(),
           ),
           AddressTag('Union Square, San Francisco'),
-          _buildActionButtons(context)
+          _buildActionButtons(context),
+          Text(product.userEmail)
         ],
       ),
     );
