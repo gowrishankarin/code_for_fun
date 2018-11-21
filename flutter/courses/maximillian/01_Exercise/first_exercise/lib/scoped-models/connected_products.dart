@@ -90,6 +90,9 @@ mixin ProductsModel on ConnectedProducts {
 
   void selectProduct(int index) {
     _selProductIndex = index;
+    if(_selProductIndex != null) {
+      notifyListeners();
+    }
   }
 
   void toggleDisplayMode() {
