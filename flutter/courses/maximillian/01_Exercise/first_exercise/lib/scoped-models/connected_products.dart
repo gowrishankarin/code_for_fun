@@ -8,6 +8,7 @@ import '../models/user.dart';
 class ConnectedProducts extends Model {
   List<Product> _products = [];
   int _selProductIndex;
+  bool _isLoading = false;
 
   User _authenticatedUser;
 
@@ -17,6 +18,7 @@ class ConnectedProducts extends Model {
     String image,
     double price,
   ) {
+    _isLoading = true;
     final Map<String, dynamic> productData = {
       title: title,
       'description': description,
@@ -44,6 +46,7 @@ class ConnectedProducts extends Model {
               userEmail: _authenticatedUser.email,
               userId: _authenticatedUser.id);
           _products.add(newProduct);
+          _isLoading = false;
           notifyListeners();
     });
   }
@@ -88,7 +91,7 @@ mixin ProductsModel on ConnectedProducts {
     http
         .get('https://flutter-products-gs.firebaseio.com/products.json')
         .then((http.Response response) {
-
+          _isLoading = true;
           final List<Product> fetchedProductList = [];
           final Map<String, dynamic> productListData =
               Convert.json.decode(response.body);
@@ -108,6 +111,7 @@ mixin ProductsModel on ConnectedProducts {
             fetchedProductList.add(product);
           });
       _products = fetchedProductList;
+      _isLoading = false;
       notifyListeners();
     });
   }
@@ -164,5 +168,11 @@ mixin UserModel on ConnectedProducts {
       email: email,
       password: password,
     );
+  }
+}
+
+mixin UtilityModel on ConnectedProducts {
+  bool get isLoading {
+    return _isLoading;
   }
 }
