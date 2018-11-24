@@ -85,7 +85,17 @@ mixin ProductsModel on ConnectedProducts {
   }
 
   void deleteProduct() {
+    _isLoading = true;
+    final deletedProductId = selectedProduct.id;
     _products.removeAt(selectedProductIndex);
+    _selProductIndex = null;
+    notifyListeners();
+    http.delete('https://flutter-products-gs.firebaseio.com/products/${deletedProductId}.json')
+      .then((http.Response response) {
+        _isLoading = false;
+        notifyListeners();
+      });
+    
   }
 
   void fetchProducts() {
