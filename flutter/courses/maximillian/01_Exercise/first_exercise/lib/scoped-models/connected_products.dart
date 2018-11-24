@@ -21,7 +21,7 @@ class ConnectedProducts extends Model {
     _isLoading = true;
     notifyListeners();
     final Map<String, dynamic> productData = {
-      title: title,
+      'title': title,
       'description': description,
       'image':
           'https://www.livemint.com/rf/Image-621x414/LiveMint/Period2/2017/10/31/Photos/Processed/fruits-kFLF--621x414@LiveMint.jpg',
@@ -35,20 +35,20 @@ class ConnectedProducts extends Model {
       body: Convert.json.encode(productData),
     )
         .then((http.Response response) {
-          final Map<String, dynamic> responseData =
-              Convert.json.decode(response.body);
-          print(responseData);
-          final Product newProduct = Product(
-              id: responseData['name'],
-              title: title,
-              description: description,
-              image: image,
-              price: price,
-              userEmail: _authenticatedUser.email,
-              userId: _authenticatedUser.id);
-          _products.add(newProduct);
-          _isLoading = false;
-          notifyListeners();
+      final Map<String, dynamic> responseData =
+          Convert.json.decode(response.body);
+      print(responseData);
+      final Product newProduct = Product(
+          id: responseData['name'],
+          title: title,
+          description: description,
+          image: image,
+          price: price,
+          userEmail: _authenticatedUser.email,
+          userId: _authenticatedUser.id);
+      _products.add(newProduct);
+      _isLoading = false;
+      notifyListeners();
     });
   }
 }
@@ -94,49 +94,67 @@ mixin ProductsModel on ConnectedProducts {
     http
         .get('https://flutter-products-gs.firebaseio.com/products.json')
         .then((http.Response response) {
-          _isLoading = true;
-          final List<Product> fetchedProductList = [];
-          final Map<String, dynamic> productListData =
-              Convert.json.decode(response.body);
-          print(productListData);
-          if(productListData == null) {
-            _isLoading = false;
-            notifyListeners();
-           
-          } 
-          productListData
-              .forEach((String productId, dynamic productData) {
-            final Product product = Product(
-                id: productId,
-                title: productData['title'],
-                description: productData['description'],
-                image: productData['image'],
-                price: productData['price'],
-                userEmail: productData['userEmail'],
-                userId: productData['userId']
-            );
-            fetchedProductList.add(product);
-          });
+      _isLoading = true;
+      final List<Product> fetchedProductList = [];
+      final Map<String, dynamic> productListData =
+          Convert.json.decode(response.body);
+      print(productListData);
+      if (productListData == null) {
+        _isLoading = false;
+        notifyListeners();
+      }
+      productListData.forEach((String productId, dynamic productData) {
+        final Product product = Product(
+            id: productId,
+            title: productData['title'],
+            description: productData['description'],
+            image: productData['image'],
+            price: productData['price'],
+            userEmail: productData['userEmail'],
+            userId: productData['userId']);
+        fetchedProductList.add(product);
+      });
       _products = fetchedProductList;
       _isLoading = false;
       notifyListeners();
     });
   }
 
-  void updateProduct(
+  Future<Null> updateProduct(
     String title,
     String description,
     String image,
     double price,
   ) {
-    final Product updatedProduct = Product(
+    _isLoading = true;
+    notifyListeners();
+    final Map<String, dynamic> updateData = {
+      'title': title,
+      'description': description,
+      'image': 'https://www.livemint.com/rf/Image-621x414/LiveMint/Period2/2017/10/31/Photos/Processed/fruits-kFLF--621x414@LiveMint.jpg',
+      'price': price,
+      'userEmail': _authenticatedUser.email,
+      'userId': _authenticatedUser.id
+    };
+    return http.put(
+      'https://flutter-products-gs.firebaseio.com/products/${selectedProduct.id}.json',
+      body: Convert.json.encode(updateData),
+    ).then((http.Response response) {
+      _isLoading = false;
+      final Product updatedProduct = Product(
+        id: selectedProduct.id,
         title: title,
         description: description,
         image: image,
         price: price,
         userEmail: _authenticatedUser.email,
-        userId: _authenticatedUser.id);
-    _products[selectedProductIndex] = updatedProduct;
+        userId: _authenticatedUser.id,
+      );
+      _products[selectedProductIndex] = updatedProduct;
+      notifyListeners();
+    });
+
+    
   }
 
   void toggleProductFavoriteStatus() {
