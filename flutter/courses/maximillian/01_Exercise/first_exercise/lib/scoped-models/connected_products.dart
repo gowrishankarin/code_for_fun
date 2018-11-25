@@ -12,7 +12,7 @@ class ConnectedProducts extends Model {
 
   User _authenticatedUser;
 
-  Future<Null> addProduct(
+  Future<bool> addProduct(
     String title,
     String description,
     String image,
@@ -35,6 +35,10 @@ class ConnectedProducts extends Model {
       body: Convert.json.encode(productData),
     )
         .then((http.Response response) {
+          if(response.statusCode != 200 && response.statusCode != 201) {
+            _isLoading = false;
+            return false;
+          }
       final Map<String, dynamic> responseData =
           Convert.json.decode(response.body);
       final Product newProduct = Product(
@@ -48,6 +52,7 @@ class ConnectedProducts extends Model {
       _products.add(newProduct);
       _isLoading = false;
       notifyListeners();
+      return true;
     });
   }
 }
