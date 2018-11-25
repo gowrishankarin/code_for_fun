@@ -9,8 +9,47 @@ class ConnectedProducts extends Model {
   List<Product> _products = [];
   String _selProductId;
   bool _isLoading = false;
-
   User _authenticatedUser;
+}
+
+mixin ProductsModel on ConnectedProducts {
+  bool _showFavorites = false;
+
+  List<Product> get allProducts {
+    return List.from(_products);
+  }
+
+  List<Product> get displayedProducts {
+    if (_showFavorites) {
+      return List.from(
+          _products.where((Product product) => product.isFavorite).toList());
+    }
+    return List.from(_products);
+  }
+
+  String get selectedProductId {
+    return _selProductId;
+  }
+
+  Product get selectedProduct {
+    if (selectedProductId == null) {
+      return null;
+    } else {
+      return _products.firstWhere((Product product) {
+        return product.id == _selProductId;
+      });
+    }
+  }
+
+  bool get displayFavoritesOnly {
+    return _showFavorites;
+  }
+
+  int get selectedProductIndex {
+      return _products.indexWhere((Product product) {
+        return product.id == _selProductId;
+      });
+  }
 
   Future<bool> addProduct(
     String title,
@@ -68,46 +107,7 @@ class ConnectedProducts extends Model {
     //   return false;
     // });
   }
-}
 
-mixin ProductsModel on ConnectedProducts {
-  bool _showFavorites = false;
-
-  List<Product> get allProducts {
-    return List.from(_products);
-  }
-
-  List<Product> get displayedProducts {
-    if (_showFavorites) {
-      return List.from(
-          _products.where((Product product) => product.isFavorite).toList());
-    }
-    return List.from(_products);
-  }
-
-  String get selectedProductId {
-    return _selProductId;
-  }
-
-  Product get selectedProduct {
-    if (selectedProductId == null) {
-      return null;
-    } else {
-      return _products.firstWhere((Product product) {
-        return product.id == _selProductId;
-      });
-    }
-  }
-
-  bool get displayFavoritesOnly {
-    return _showFavorites;
-  }
-
-  int get selectedProductIndex {
-      return _products.indexWhere((Product product) {
-        return product.id == _selProductId;
-      });
-  }
   Future<bool> deleteProduct() {
     _isLoading = true;
     final String deletedProductId = selectedProduct.id;
