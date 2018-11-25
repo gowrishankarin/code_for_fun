@@ -7,7 +7,7 @@ import '../models/user.dart';
 
 class ConnectedProducts extends Model {
   List<Product> _products = [];
-  int _selProductIndex;
+  String _selProductId;
   bool _isLoading = false;
 
   User _authenticatedUser;
@@ -37,7 +37,6 @@ class ConnectedProducts extends Model {
         .then((http.Response response) {
       final Map<String, dynamic> responseData =
           Convert.json.decode(response.body);
-      print(responseData);
       final Product newProduct = Product(
           id: responseData['name'],
           title: title,
@@ -68,15 +67,17 @@ mixin ProductsModel on ConnectedProducts {
     return List.from(_products);
   }
 
-  int get selectedProductIndex {
-    return _selProductIndex;
+  String get selectedProductId {
+    return _selProductId;
   }
 
   Product get selectedProduct {
-    if (selectedProductIndex == null) {
+    if (selectedProductId == null) {
       return null;
     } else {
-      return _products[selectedProductIndex];
+      return _products.firstWhere((Product product) {
+        return product.id == _selProductId;
+      });
     }
   }
 
@@ -84,18 +85,22 @@ mixin ProductsModel on ConnectedProducts {
     return _showFavorites;
   }
 
+  int get selectedProductIndex {
+      return _products.indexWhere((Product product) {
+        return product.id == _selProductId;
+      });
+  }
   void deleteProduct() {
     _isLoading = true;
     final String deletedProductId = selectedProduct.id;
     _products.removeAt(selectedProductIndex);
-    _selProductIndex = null;
+    _selProductId = null;
     notifyListeners();
-    http.delete('https://flutter-products-gs.firebaseio.com/products/{deletedProductId}.json')
+    http.delete('https://flutter-products-gs.firebaseio.com/products/${deletedProductId}.json')
       .then((http.Response response) {
         _isLoading = false;
         notifyListeners();
       });
-    
   }
 
   Future<Null> fetchProducts() {
@@ -108,7 +113,6 @@ mixin ProductsModel on ConnectedProducts {
       final List<Product> fetchedProductList = [];
       final Map<String, dynamic> productListData =
           Convert.json.decode(response.body);
-      print(productListData);
       if (productListData == null) {
         _isLoading = false;
         notifyListeners();
@@ -127,6 +131,7 @@ mixin ProductsModel on ConnectedProducts {
       _products = fetchedProductList;
       _isLoading = false;
       notifyListeners();
+      _selProductId = null;
     });
   }
 
@@ -171,6 +176,7 @@ mixin ProductsModel on ConnectedProducts {
     final bool isCurrentlyFavorite = _products[selectedProductIndex].isFavorite;
     final bool newFavoriteStatus = !isCurrentlyFavorite;
     final Product updatedProduct = Product(
+      id: selectedProduct.id,
       title: selectedProduct.title,
       description: selectedProduct.description,
       price: selectedProduct.price,
@@ -183,9 +189,9 @@ mixin ProductsModel on ConnectedProducts {
     notifyListeners();
   }
 
-  void selectProduct(int index) {
-    _selProductIndex = index;
-    if (_selProductIndex != null) {
+  void selectProduct(String productId) {
+    _selProductId = productId;
+    if (_selProductId != null) {
       notifyListeners();
     }
   }
