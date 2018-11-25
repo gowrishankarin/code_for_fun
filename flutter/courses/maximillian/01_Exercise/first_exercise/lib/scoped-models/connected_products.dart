@@ -37,6 +37,7 @@ class ConnectedProducts extends Model {
         .then((http.Response response) {
           if(response.statusCode != 200 && response.statusCode != 201) {
             _isLoading = false;
+            notifyListeners();
             return false;
           }
       final Map<String, dynamic> responseData =
@@ -53,6 +54,11 @@ class ConnectedProducts extends Model {
       _isLoading = false;
       notifyListeners();
       return true;
+    })
+    .catchError((error) {
+      _isLoading = false;
+      notifyListeners();
+      return false;
     });
   }
 }
@@ -95,17 +101,23 @@ mixin ProductsModel on ConnectedProducts {
         return product.id == _selProductId;
       });
   }
-  void deleteProduct() {
+  Future<bool> deleteProduct() {
     _isLoading = true;
     final String deletedProductId = selectedProduct.id;
     _products.removeAt(selectedProductIndex);
     _selProductId = null;
     notifyListeners();
-    http.delete('https://flutter-products-gs.firebaseio.com/products/${deletedProductId}.json')
+    return http.delete('https://flutter-products-gs.firebaseio.com/products/${deletedProductId}.json')
       .then((http.Response response) {
         _isLoading = false;
         notifyListeners();
-      });
+        return true;
+      })
+      .catchError((error) {
+      _isLoading = false;
+      notifyListeners();
+      return false;
+    });
   }
 
   Future<Null> fetchProducts() {
@@ -113,7 +125,7 @@ mixin ProductsModel on ConnectedProducts {
     notifyListeners();
     return http
         .get('https://flutter-products-gs.firebaseio.com/products.json')
-        .then((http.Response response) {
+        .then<Null>((http.Response response) {
       _isLoading = true;
       final List<Product> fetchedProductList = [];
       final Map<String, dynamic> productListData =
@@ -121,6 +133,7 @@ mixin ProductsModel on ConnectedProducts {
       if (productListData == null) {
         _isLoading = false;
         notifyListeners();
+        return;
       }
       productListData.forEach((String productId, dynamic productData) {
         final Product product = Product(
@@ -137,10 +150,15 @@ mixin ProductsModel on ConnectedProducts {
       _isLoading = false;
       notifyListeners();
       _selProductId = null;
+    })
+    .catchError((error) {
+      _isLoading = false;
+      notifyListeners();
+      //return false;
     });
   }
 
-  Future<Null> updateProduct(
+  Future<bool> updateProduct(
     String title,
     String description,
     String image,
@@ -172,6 +190,12 @@ mixin ProductsModel on ConnectedProducts {
       );
       _products[selectedProductIndex] = updatedProduct;
       notifyListeners();
+      return true;
+    })
+    .catchError((error) {
+      _isLoading = false;
+      notifyListeners();
+      return false;
     });
 
     
