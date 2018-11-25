@@ -17,29 +17,31 @@ class ConnectedProducts extends Model {
     String description,
     String image,
     double price,
-  ) {
-    _isLoading = true;
-    notifyListeners();
-    final Map<String, dynamic> productData = {
-      'title': title,
-      'description': description,
-      'image':
-          'https://www.livemint.com/rf/Image-621x414/LiveMint/Period2/2017/10/31/Photos/Processed/fruits-kFLF--621x414@LiveMint.jpg',
-      'price': price,
-      'userEmail': _authenticatedUser.email,
-      'userId': _authenticatedUser.id
-    };
-    return http
-        .post(
-      'https://flutter-products-gs.firebaseio.com/products.json',
-      body: Convert.json.encode(productData),
-    )
-        .then((http.Response response) {
-          if(response.statusCode != 200 && response.statusCode != 201) {
-            _isLoading = false;
-            notifyListeners();
-            return false;
-          }
+  ) async {
+
+    try {
+      _isLoading = true;
+      notifyListeners();
+      final Map<String, dynamic> productData = {
+        'title': title,
+        'description': description,
+        'image':
+            'https://www.livemint.com/rf/Image-621x414/LiveMint/Period2/2017/10/31/Photos/Processed/fruits-kFLF--621x414@LiveMint.jpg',
+        'price': price,
+        'userEmail': _authenticatedUser.email,
+        'userId': _authenticatedUser.id
+      };
+      final http.Response response = await http
+          .post(
+        'https://flutter-products-gs.firebaseio.com/products.json',
+        body: Convert.json.encode(productData),
+      );
+          //.then((http.Response response) {
+      if(response.statusCode != 200 && response.statusCode != 201) {
+        _isLoading = false;
+        notifyListeners();
+        return false;
+      }
       final Map<String, dynamic> responseData =
           Convert.json.decode(response.body);
       final Product newProduct = Product(
@@ -54,12 +56,17 @@ class ConnectedProducts extends Model {
       _isLoading = false;
       notifyListeners();
       return true;
-    })
-    .catchError((error) {
-      _isLoading = false;
-      notifyListeners();
-      return false;
-    });
+    } catch(error) {
+       _isLoading = false;
+       notifyListeners();
+       return false;
+    }
+    //})
+    // .catchError((error) {
+    //   _isLoading = false;
+    //   notifyListeners();
+    //   return false;
+    // });
   }
 }
 
