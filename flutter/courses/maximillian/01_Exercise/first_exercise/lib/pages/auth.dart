@@ -22,14 +22,22 @@ class _AuthPageState extends State<AuthPage> {
   final TextEditingController _passwordTextController = TextEditingController();
   AuthMode _authMode = AuthMode.Login;
 
-  void _submitForm(Function login) {
+  void _submitForm(Function login, Function signup) async {
     if (!_formKey.currentState.validate() ||
         _formData['acceptTerms'] == false) {
       return;
     }
     _formKey.currentState.save();
-    login(_formData['email'], _formData['password']);
+    if(_authMode == AuthMode.Login) {
+      login(_formData['email'], _formData['password']);
 
+    } else {
+      final Map<String, dynamic>  successInformation = await signup(_formData['email'], _formData['password']);
+      if(successInformation['success']) {
+        Navigator.pushReplacementNamed(context, '/products');
+      }
+    }
+    
     Navigator.pushReplacementNamed(context, '/products');
   }
 
@@ -69,17 +77,18 @@ class _AuthPageState extends State<AuthPage> {
     return TextFormField(
       decoration: InputDecoration(
           labelText: 'Confirm Password', filled: true, fillColor: Colors.white),
+      obscureText: true,
       keyboardType: TextInputType.emailAddress,
       validator: (String value) {
         if (_passwordTextController.text != value) {
           return 'Passwords do not match';
         }
       },
-      onSaved: (String value) {
-        //setState(() {
-        _formData['email'] = value;
-        //});
-      },
+      // onSaved: (String value) {
+      //   //setState(() {
+      //   _formData['password'] = value;
+      //   //});
+      // },
     );
   }
 
@@ -170,7 +179,7 @@ class _AuthPageState extends State<AuthPage> {
                           child: Text('LOGIN'),
                           // color: Theme.of(context).accentColor,
                           textColor: Colors.white,
-                          onPressed: () => _submitForm(model.login),
+                          onPressed: () => _submitForm(model.login, model.signup),
                         );
                       },
                     ),

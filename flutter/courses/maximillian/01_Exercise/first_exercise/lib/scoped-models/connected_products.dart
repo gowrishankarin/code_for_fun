@@ -46,9 +46,9 @@ mixin ProductsModel on ConnectedProducts {
   }
 
   int get selectedProductIndex {
-      return _products.indexWhere((Product product) {
-        return product.id == _selProductId;
-      });
+    return _products.indexWhere((Product product) {
+      return product.id == _selProductId;
+    });
   }
 
   Future<bool> addProduct(
@@ -57,7 +57,6 @@ mixin ProductsModel on ConnectedProducts {
     String image,
     double price,
   ) async {
-
     try {
       _isLoading = true;
       notifyListeners();
@@ -70,13 +69,12 @@ mixin ProductsModel on ConnectedProducts {
         'userEmail': _authenticatedUser.email,
         'userId': _authenticatedUser.id
       };
-      final http.Response response = await http
-          .post(
+      final http.Response response = await http.post(
         'https://flutter-products-gs.firebaseio.com/products.json',
         body: Convert.json.encode(productData),
       );
-          //.then((http.Response response) {
-      if(response.statusCode != 200 && response.statusCode != 201) {
+      //.then((http.Response response) {
+      if (response.statusCode != 200 && response.statusCode != 201) {
         _isLoading = false;
         notifyListeners();
         return false;
@@ -95,10 +93,10 @@ mixin ProductsModel on ConnectedProducts {
       _isLoading = false;
       notifyListeners();
       return true;
-    } catch(error) {
-       _isLoading = false;
-       notifyListeners();
-       return false;
+    } catch (error) {
+      _isLoading = false;
+      notifyListeners();
+      return false;
     }
     //})
     // .catchError((error) {
@@ -114,13 +112,14 @@ mixin ProductsModel on ConnectedProducts {
     _products.removeAt(selectedProductIndex);
     _selProductId = null;
     notifyListeners();
-    return http.delete('https://flutter-products-gs.firebaseio.com/products/${deletedProductId}.json')
-      .then((http.Response response) {
-        _isLoading = false;
-        notifyListeners();
-        return true;
-      })
-      .catchError((error) {
+    return http
+        .delete(
+            'https://flutter-products-gs.firebaseio.com/products/${deletedProductId}.json')
+        .then((http.Response response) {
+      _isLoading = false;
+      notifyListeners();
+      return true;
+    }).catchError((error) {
       _isLoading = false;
       notifyListeners();
       return false;
@@ -157,8 +156,7 @@ mixin ProductsModel on ConnectedProducts {
       _isLoading = false;
       notifyListeners();
       _selProductId = null;
-    })
-    .catchError((error) {
+    }).catchError((error) {
       _isLoading = false;
       notifyListeners();
       //return false;
@@ -176,15 +174,18 @@ mixin ProductsModel on ConnectedProducts {
     final Map<String, dynamic> updateData = {
       'title': title,
       'description': description,
-      'image': 'https://www.livemint.com/rf/Image-621x414/LiveMint/Period2/2017/10/31/Photos/Processed/fruits-kFLF--621x414@LiveMint.jpg',
+      'image':
+          'https://www.livemint.com/rf/Image-621x414/LiveMint/Period2/2017/10/31/Photos/Processed/fruits-kFLF--621x414@LiveMint.jpg',
       'price': price,
       'userEmail': _authenticatedUser.email,
       'userId': _authenticatedUser.id
     };
-    return http.put(
+    return http
+        .put(
       'https://flutter-products-gs.firebaseio.com/products/${selectedProduct.id}.json',
       body: Convert.json.encode(updateData),
-    ).then((http.Response response) {
+    )
+        .then((http.Response response) {
       _isLoading = false;
       final Product updatedProduct = Product(
         id: selectedProduct.id,
@@ -198,14 +199,11 @@ mixin ProductsModel on ConnectedProducts {
       _products[selectedProductIndex] = updatedProduct;
       notifyListeners();
       return true;
-    })
-    .catchError((error) {
+    }).catchError((error) {
       _isLoading = false;
       notifyListeners();
       return false;
     });
-
-    
   }
 
   void toggleProductFavoriteStatus() {
@@ -245,6 +243,25 @@ mixin UserModel on ConnectedProducts {
       email: email,
       password: password,
     );
+  }
+
+  Future<Map<String, dynamic>> signup(String email, String password) async {
+    final Map<String, dynamic> authData = {
+      'email': email,
+      'password': password,
+      'returnSecureToken': true
+    };
+    final http.Response response = await http.post(
+      'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyBS-hQNId35PQwSjTzyMevsLEjuGhUIhos',
+      body: Convert.json.encode(authData),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    );
+    return {
+      'success': true,
+      'message': 'Authentication Succeeded!!'
+    };
   }
 }
 
