@@ -1,6 +1,7 @@
 import 'dart:convert' as Convert;
 import 'package:scoped_model/scoped_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart' as SP;
 
 import '../models/product.dart';
 import '../models/user.dart';
@@ -239,6 +240,11 @@ mixin ProductsModel on ConnectedProducts {
 }
 
 mixin UserModel on ConnectedProducts {
+
+  User get user{
+    return _authenticatedUser;
+  }
+
   Future<Map<String, dynamic>> authenticate(String email, String password, [AuthMode mode = AuthMode.Login]) async {
     _isLoading = true;
     notifyListeners();
@@ -280,6 +286,10 @@ mixin UserModel on ConnectedProducts {
         email: responseData['email'],
         token: responseData['idToken'],
       );
+      final SP.SharedPreferences prefs = await SP.SharedPreferences.getInstance();
+      prefs.setString('token', responseData['idToken']);
+      prefs.setString('userEmail', responseData['email']);
+      prefs.setString('userId', responseData['localId']);
     } else if (responseData['error']['message'] == 'INVALID_PASSWORD') {
       message = 'Wrong Password!!';
     } else if (responseData['error']['message'] == 'EMAIL_EXISTS') {
@@ -293,6 +303,25 @@ mixin UserModel on ConnectedProducts {
       'success': !hasError,
       'message': message
     };
+  }
+
+  void autoAuthenticate() async {
+    final SP.SharedPreferences prefs = await SP.SharedPreferences.getInstance();
+    final String token = prefs.getString('token');
+    if(token != null) {
+      final String userEmail = prefs.getString('userEmail');
+      final String userId = prefs.getString('userId');
+      _authenticatedUser = User(id: userId, email: userEmail, token: token);
+      notifyListeners();
+    }
+  }
+
+  void logout() async {
+    _authenticatedUser = null;
+    final SP.SharedPreferences prefs = await SP.SharedPreferences.getInstance();
+    prefs.remove('token');
+    prefs.remove('userEmail');
+    prefs.remove('userId');
   }
 }
 
