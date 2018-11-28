@@ -71,7 +71,7 @@ mixin ProductsModel on ConnectedProducts {
         'userId': _authenticatedUser.id
       };
       final http.Response response = await http.post(
-        'https://flutter-products-gs.firebaseio.com/products.json',
+        'https://flutter-products-gs.firebaseio.com/products.json?auth=${_authenticatedUser.token}',
         body: Convert.json.encode(productData),
       );
       //.then((http.Response response) {
@@ -131,7 +131,7 @@ mixin ProductsModel on ConnectedProducts {
     _isLoading = true;
     notifyListeners();
     return http
-        .get('https://flutter-products-gs.firebaseio.com/products.json')
+        .get('https://flutter-products-gs.firebaseio.com/products.json?auth=${_authenticatedUser.token}')
         .then<Null>((http.Response response) {
       _isLoading = true;
       final List<Product> fetchedProductList = [];
@@ -183,7 +183,7 @@ mixin ProductsModel on ConnectedProducts {
     };
     return http
         .put(
-      'https://flutter-products-gs.firebaseio.com/products/${selectedProduct.id}.json',
+      'https://flutter-products-gs.firebaseio.com/products/${selectedProduct.id}.json?auth=${_authenticatedUser.token}',
       body: Convert.json.encode(updateData),
     )
         .then((http.Response response) {
@@ -198,6 +198,7 @@ mixin ProductsModel on ConnectedProducts {
         userId: _authenticatedUser.id,
       );
       _products[selectedProductIndex] = updatedProduct;
+      _isLoading = false;
       notifyListeners();
       return true;
     }).catchError((error) {
@@ -239,12 +240,6 @@ mixin ProductsModel on ConnectedProducts {
 
 mixin UserModel on ConnectedProducts {
   Future<Map<String, dynamic>> authenticate(String email, String password, [AuthMode mode = AuthMode.Login]) async {
-    _authenticatedUser = User(
-      id: '12345',
-      email: email,
-      password: password,
-    );
-
     _isLoading = true;
     notifyListeners();
     http.Response response;
@@ -252,8 +247,8 @@ mixin UserModel on ConnectedProducts {
       response = await http.post(
         'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyBS-hQNId35PQwSjTzyMevsLEjuGhUIhos',
         body: Convert.json.encode({
-          'email': _authenticatedUser.email,
-          'password': _authenticatedUser.password,
+          'email': email,
+          'password': password,
           'returnSecureToken': true
         }),
         headers: {'Content-Type': 'application/json'}
@@ -262,8 +257,8 @@ mixin UserModel on ConnectedProducts {
       response = await http.post(
         'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyBS-hQNId35PQwSjTzyMevsLEjuGhUIhos',
         body: Convert.json.encode({
-          'email': _authenticatedUser.email,
-          'password': _authenticatedUser.password,
+          'email': email,
+          'password': password,
           'returnSecureToken': true
         }),
         headers: {
@@ -274,11 +269,17 @@ mixin UserModel on ConnectedProducts {
 
 
     final Map<String, dynamic> responseData = Convert.json.decode(response.body);
+    print(responseData);
     bool hasError = true;
     String message = 'Login Failed!';
     if(responseData.containsKey('idToken')) {
       hasError = false;
       message = 'Authentication Succeeded!!';
+      _authenticatedUser = User(
+        id: responseData['localId'],
+        email: responseData['email'],
+        token: responseData['idToken'],
+      );
     } else if (responseData['error']['message'] == 'INVALID_PASSWORD') {
       message = 'Wrong Password!!';
     } else if (responseData['error']['message'] == 'EMAIL_EXISTS') {
