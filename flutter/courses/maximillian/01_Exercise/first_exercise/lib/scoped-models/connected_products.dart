@@ -154,7 +154,11 @@ mixin ProductsModel on ConnectedProducts {
             image: productData['image'],
             price: productData['price'],
             userEmail: productData['userEmail'],
-            userId: productData['userId']);
+            userId: productData['userId'],
+            isFavorite: productData['wishlistUsers'] == null
+                ? false
+                : (productData['wishlistUsers'] as Map<String, dynamic>)
+                    .containsKey(_authenticatedUser.id));
         fetchedProductList.add(product);
       });
       _products = fetchedProductList;
@@ -237,10 +241,10 @@ mixin ProductsModel on ConnectedProducts {
     } else {
       response = await http.delete(
         'https://flutter-products-gs.firebaseio.com/products/${selectedProduct.id}/wishlistUsers/${_authenticatedUser.id}.json?auth=${_authenticatedUser.token}',
-      );     
+      );
     }
 
-    if(response.statusCode != 200 && response.statusCode != 201) {
+    if (response.statusCode != 200 && response.statusCode != 201) {
       final Product updatedProduct = Product(
         id: selectedProduct.id,
         title: selectedProduct.title,
