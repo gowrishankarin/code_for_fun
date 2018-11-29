@@ -24,10 +24,16 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final MainModel _model = MainModel();
-    
+  bool _isAuthenticated = false;
+
   @override
   void initState() {
     _model.autoAuthenticate();
+    _model.userSubject.listen((bool isAuthenticated) {
+      setState(() {
+        _isAuthenticated = isAuthenticated;
+      });
+    });
     super.initState();
   }
 
@@ -36,44 +42,55 @@ class _MyAppState extends State<MyApp> {
     return ScopedModel<MainModel>(
       model: _model,
       child: MaterialApp(
-      theme: ThemeData(
-        brightness: Brightness.light,
-        primarySwatch: Colors.lightGreen,
-        accentColor: Colors.green,
-        buttonColor: Colors.green,
-        //buttonTheme: ButtonThemeData(
-        //  textTheme: TextTheme()
-        //)
-        //fontFamily: 'Oswald'
-      ),
-      routes: {
-        '/': (BuildContext context) => _model.user == null ? AuthPage() : ProductsPage(_model),
-        '/products': (BuildContext context) => ProductsPage(_model),
-        '/admin': (BuildContext context) =>
-            ProductAdminPage(_model)
-      },
-      onGenerateRoute: (RouteSettings settings) {
-        final List<String> pathElements = settings.name.split('/');
-        if (pathElements[0] != '') {
-          return null;
-        }
+        theme: ThemeData(
+          brightness: Brightness.light,
+          primarySwatch: Colors.lightGreen,
+          accentColor: Colors.green,
+          buttonColor: Colors.green,
+          //buttonTheme: ButtonThemeData(
+          //  textTheme: TextTheme()
+          //)
+          //fontFamily: 'Oswald'
+        ),
+        routes: {
+          '/': (BuildContext context) =>
+              _isAuthenticated == false ? AuthPage() : ProductsPage(_model),
+          //'/products': (BuildContext context) => ProductsPage(_model),
+          '/admin': (BuildContext context) =>
+              _isAuthenticated == false ? AuthPage() : ProductAdminPage(_model)
+        },
+        onGenerateRoute: (RouteSettings settings) {
+          if (!_isAuthenticated) {
+            return MaterialPageRoute<bool>(
+              builder: (BuildContext context) => AuthPage(),
+            );
+          }
 
-        if (pathElements[1] == 'product') {
-          final String productId = pathElements[2];
-          final Product product = _model.allProducts.firstWhere((Product product) {
-            return product.id == productId;
-          });
-          return MaterialPageRoute<bool>(
-            builder: (BuildContext context) => ProductPage(product),
+          final List<String> pathElements = settings.name.split('/');
+          if (pathElements[0] != '') {
+            return null;
+          }
+
+          if (pathElements[1] == 'product') {
+            final String productId = pathElements[2];
+            final Product product =
+                _model.allProducts.firstWhere((Product product) {
+              return product.id == productId;
+            });
+            return MaterialPageRoute<bool>(
+              builder: (BuildContext context) =>
+                  _isAuthenticated == false ? AuthPage() : ProductPage(product),
+            );
+          }
+          return null;
+        },
+        onUnknownRoute: (RouteSettings settings) {
+          return MaterialPageRoute(
+            builder: (BuildContext context) =>
+                _isAuthenticated == false ? AuthPage() : ProductsPage(_model),
           );
-        }
-        return null;
-      },
-      onUnknownRoute: (RouteSettings settings) {
-        return MaterialPageRoute(
-          builder: (BuildContext context) => ProductsPage(_model),
-        );
-      },
-    ),);
+        },
+      ),
+    );
   }
 }

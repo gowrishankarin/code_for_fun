@@ -3,6 +3,7 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart' as SP;
 import 'dart:async';
+import 'package:rxdart/subjects.dart';
 
 import '../models/product.dart';
 import '../models/user.dart';
@@ -242,12 +243,15 @@ mixin ProductsModel on ConnectedProducts {
 
 mixin UserModel on ConnectedProducts {
   Timer _authTimer;
+  PublishSubject<bool> _userSubject = PublishSubject();
 
   User get user{
     return _authenticatedUser;
   }
 
-  
+  PublishSubject<bool> get userSubject {
+    return _userSubject;
+  }  
 
   Future<Map<String, dynamic>> authenticate(String email, String password, [AuthMode mode = AuthMode.Login]) async {
     _isLoading = true;
@@ -278,7 +282,6 @@ mixin UserModel on ConnectedProducts {
     }
 
     final Map<String, dynamic> responseData = Convert.json.decode(response.body);
-    print(responseData);
     bool hasError = true;
     String message = 'Login Failed!';
     if(responseData.containsKey('idToken')) {
@@ -290,6 +293,8 @@ mixin UserModel on ConnectedProducts {
         token: responseData['idToken'],
       );
       setAuthTimeout(int.parse(responseData['expiresIn']));
+      _userSubject.add(true);
+      
       final now = DateTime.now();
       final DateTime expiryTime = now.add(Duration(seconds: int.parse(responseData['expiresIn'])));
       final SP.SharedPreferences prefs = await SP.SharedPreferences.getInstance();
@@ -328,6 +333,7 @@ mixin UserModel on ConnectedProducts {
       final String userId = prefs.getString('userId');
       final int tokenLifespan = parsedExpiryTime.difference(now).inSeconds;
       _authenticatedUser = User(id: userId, email: userEmail, token: token);
+      _userSubject.add(true);
       setAuthTimeout(tokenLifespan);
       notifyListeners();
     }
@@ -341,10 +347,14 @@ mixin UserModel on ConnectedProducts {
     prefs.remove('token');
     prefs.remove('userEmail');
     prefs.remove('userId');
+    
   }
 
   void setAuthTimeout(int time) {
-    _authTimer = Timer(Duration(milliseconds: time*5), logout);
+    _authTimer = Timer(Duration(milliseconds: time*5), () {
+      logout();
+      _userSubject.add(false);
+    } );
   }
 }
 

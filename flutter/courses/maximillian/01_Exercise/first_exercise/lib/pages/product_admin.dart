@@ -22,7 +22,7 @@ class ProductAdminPage extends StatelessWidget {
             leading: Icon(Icons.shop),
             title: Text('All Products'),
             onTap: () {
-              Navigator.pushReplacementNamed(context, '/products');
+              Navigator.pushReplacementNamed(context, '/');
             },
           ),
           Divider(),
