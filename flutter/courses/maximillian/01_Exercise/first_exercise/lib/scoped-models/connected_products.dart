@@ -2,6 +2,7 @@ import 'dart:convert' as Convert;
 import 'package:scoped_model/scoped_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart' as SP;
+import 'dart:async';
 
 import '../models/product.dart';
 import '../models/user.dart';
@@ -240,10 +241,13 @@ mixin ProductsModel on ConnectedProducts {
 }
 
 mixin UserModel on ConnectedProducts {
+  Timer _authTimer;
 
   User get user{
     return _authenticatedUser;
   }
+
+  
 
   Future<Map<String, dynamic>> authenticate(String email, String password, [AuthMode mode = AuthMode.Login]) async {
     _isLoading = true;
@@ -273,7 +277,6 @@ mixin UserModel on ConnectedProducts {
       );
     }
 
-
     final Map<String, dynamic> responseData = Convert.json.decode(response.body);
     print(responseData);
     bool hasError = true;
@@ -286,10 +289,14 @@ mixin UserModel on ConnectedProducts {
         email: responseData['email'],
         token: responseData['idToken'],
       );
+      setAuthTimeout(int.parse(responseData['expiresIn']));
+      final now = DateTime.now();
+      final DateTime expiryTime = now.add(Duration(seconds: int.parse(responseData['expiresIn'])));
       final SP.SharedPreferences prefs = await SP.SharedPreferences.getInstance();
       prefs.setString('token', responseData['idToken']);
       prefs.setString('userEmail', responseData['email']);
       prefs.setString('userId', responseData['localId']);
+      prefs.setString('expiryTime', expiryTime.toString());
     } else if (responseData['error']['message'] == 'INVALID_PASSWORD') {
       message = 'Wrong Password!!';
     } else if (responseData['error']['message'] == 'EMAIL_EXISTS') {
@@ -308,20 +315,36 @@ mixin UserModel on ConnectedProducts {
   void autoAuthenticate() async {
     final SP.SharedPreferences prefs = await SP.SharedPreferences.getInstance();
     final String token = prefs.getString('token');
+    final String expiryTimeString = prefs.getString('expiryTime');
     if(token != null) {
+      final DateTime now = DateTime.now();
+      final DateTime parsedExpiryTime = DateTime.parse(expiryTimeString);
+      if(parsedExpiryTime.isBefore(now)) {
+        _authenticatedUser = null;
+        notifyListeners();
+        return;
+      }
       final String userEmail = prefs.getString('userEmail');
       final String userId = prefs.getString('userId');
+      final int tokenLifespan = parsedExpiryTime.difference(now).inSeconds;
       _authenticatedUser = User(id: userId, email: userEmail, token: token);
+      setAuthTimeout(tokenLifespan);
       notifyListeners();
     }
   }
 
   void logout() async {
+    print('Logout');
     _authenticatedUser = null;
+    _authTimer.cancel();
     final SP.SharedPreferences prefs = await SP.SharedPreferences.getInstance();
     prefs.remove('token');
     prefs.remove('userEmail');
     prefs.remove('userId');
+  }
+
+  void setAuthTimeout(int time) {
+    _authTimer = Timer(Duration(milliseconds: time*5), logout);
   }
 }
 
