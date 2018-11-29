@@ -134,7 +134,8 @@ mixin ProductsModel on ConnectedProducts {
     _isLoading = true;
     notifyListeners();
     return http
-        .get('https://flutter-products-gs.firebaseio.com/products.json?auth=${_authenticatedUser.token}')
+        .get(
+            'https://flutter-products-gs.firebaseio.com/products.json?auth=${_authenticatedUser.token}')
         .then<Null>((http.Response response) {
       _isLoading = true;
       final List<Product> fetchedProductList = [];
@@ -211,9 +212,10 @@ mixin ProductsModel on ConnectedProducts {
     });
   }
 
-  void toggleProductFavoriteStatus() {
+  void toggleProductFavoriteStatus() async {
     final bool isCurrentlyFavorite = _products[selectedProductIndex].isFavorite;
     final bool newFavoriteStatus = !isCurrentlyFavorite;
+
     final Product updatedProduct = Product(
       id: selectedProduct.id,
       title: selectedProduct.title,
@@ -226,6 +228,32 @@ mixin ProductsModel on ConnectedProducts {
     );
     _products[selectedProductIndex] = updatedProduct;
     notifyListeners();
+    http.Response response;
+    if (newFavoriteStatus) {
+      response = await http.put(
+        'https://flutter-products-gs.firebaseio.com/products/${selectedProduct.id}/wishlistUsers/${_authenticatedUser.id}.json?auth=${_authenticatedUser.token}',
+        body: Convert.json.encode(true),
+      );
+    } else {
+      response = await http.delete(
+        'https://flutter-products-gs.firebaseio.com/products/${selectedProduct.id}/wishlistUsers/${_authenticatedUser.id}.json?auth=${_authenticatedUser.token}',
+      );     
+    }
+
+    if(response.statusCode != 200 && response.statusCode != 201) {
+      final Product updatedProduct = Product(
+        id: selectedProduct.id,
+        title: selectedProduct.title,
+        description: selectedProduct.description,
+        price: selectedProduct.price,
+        image: selectedProduct.image,
+        userEmail: _authenticatedUser.email,
+        userId: _authenticatedUser.id,
+        isFavorite: !newFavoriteStatus,
+      );
+      _products[selectedProductIndex] = updatedProduct;
+      notifyListeners();
+    }
   }
 
   void selectProduct(String productId) {
@@ -245,46 +273,36 @@ mixin UserModel on ConnectedProducts {
   Timer _authTimer;
   PublishSubject<bool> _userSubject = PublishSubject();
 
-  User get user{
+  User get user {
     return _authenticatedUser;
   }
 
   PublishSubject<bool> get userSubject {
     return _userSubject;
-  }  
+  }
 
-  Future<Map<String, dynamic>> authenticate(String email, String password, [AuthMode mode = AuthMode.Login]) async {
+  Future<Map<String, dynamic>> authenticate(String email, String password,
+      [AuthMode mode = AuthMode.Login]) async {
     _isLoading = true;
     notifyListeners();
     http.Response response;
-    if(mode == AuthMode.Login) {
+    if (mode == AuthMode.Login) {
       response = await http.post(
-        'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyBS-hQNId35PQwSjTzyMevsLEjuGhUIhos',
-        body: Convert.json.encode({
-          'email': email,
-          'password': password,
-          'returnSecureToken': true
-        }),
-        headers: {'Content-Type': 'application/json'}
-      );
+          'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyBS-hQNId35PQwSjTzyMevsLEjuGhUIhos',
+          body: Convert.json.encode({'email': email, 'password': password, 'returnSecureToken': true}),
+          headers: {'Content-Type': 'application/json'});
     } else {
       response = await http.post(
-        'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyBS-hQNId35PQwSjTzyMevsLEjuGhUIhos',
-        body: Convert.json.encode({
-          'email': email,
-          'password': password,
-          'returnSecureToken': true
-        }),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      );
+          'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyBS-hQNId35PQwSjTzyMevsLEjuGhUIhos',
+          body: Convert.json.encode({'email': email, 'password': password, 'returnSecureToken': true}),
+          headers: {'Content-Type': 'application/json'});
     }
 
-    final Map<String, dynamic> responseData = Convert.json.decode(response.body);
+    final Map<String, dynamic> responseData =
+        Convert.json.decode(response.body);
     bool hasError = true;
     String message = 'Login Failed!';
-    if(responseData.containsKey('idToken')) {
+    if (responseData.containsKey('idToken')) {
       hasError = false;
       message = 'Authentication Succeeded!!';
       _authenticatedUser = User(
@@ -294,10 +312,12 @@ mixin UserModel on ConnectedProducts {
       );
       setAuthTimeout(int.parse(responseData['expiresIn']));
       _userSubject.add(true);
-      
+
       final now = DateTime.now();
-      final DateTime expiryTime = now.add(Duration(seconds: int.parse(responseData['expiresIn'])));
-      final SP.SharedPreferences prefs = await SP.SharedPreferences.getInstance();
+      final DateTime expiryTime =
+          now.add(Duration(seconds: int.parse(responseData['expiresIn'])));
+      final SP.SharedPreferences prefs =
+          await SP.SharedPreferences.getInstance();
       prefs.setString('token', responseData['idToken']);
       prefs.setString('userEmail', responseData['email']);
       prefs.setString('userId', responseData['localId']);
@@ -311,20 +331,17 @@ mixin UserModel on ConnectedProducts {
     _isLoading = false;
     notifyListeners();
 
-    return {
-      'success': !hasError,
-      'message': message
-    };
+    return {'success': !hasError, 'message': message};
   }
 
   void autoAuthenticate() async {
     final SP.SharedPreferences prefs = await SP.SharedPreferences.getInstance();
     final String token = prefs.getString('token');
     final String expiryTimeString = prefs.getString('expiryTime');
-    if(token != null) {
+    if (token != null) {
       final DateTime now = DateTime.now();
       final DateTime parsedExpiryTime = DateTime.parse(expiryTimeString);
-      if(parsedExpiryTime.isBefore(now)) {
+      if (parsedExpiryTime.isBefore(now)) {
         _authenticatedUser = null;
         notifyListeners();
         return;
@@ -348,7 +365,6 @@ mixin UserModel on ConnectedProducts {
     prefs.remove('token');
     prefs.remove('userEmail');
     prefs.remove('userId');
-    
   }
 
   void setAuthTimeout(int time) {
