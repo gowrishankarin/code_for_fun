@@ -343,6 +343,7 @@ mixin UserModel on ConnectedProducts {
     print('Logout');
     _authenticatedUser = null;
     _authTimer.cancel();
+    _userSubject.add(false);
     final SP.SharedPreferences prefs = await SP.SharedPreferences.getInstance();
     prefs.remove('token');
     prefs.remove('userEmail');
@@ -351,10 +352,7 @@ mixin UserModel on ConnectedProducts {
   }
 
   void setAuthTimeout(int time) {
-    _authTimer = Timer(Duration(milliseconds: time*5), () {
-      logout();
-      _userSubject.add(false);
-    } );
+    _authTimer = Timer(Duration(seconds: time), logout);
   }
 }
 
