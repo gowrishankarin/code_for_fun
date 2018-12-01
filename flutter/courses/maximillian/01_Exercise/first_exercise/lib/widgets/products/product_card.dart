@@ -72,7 +72,7 @@ class ProductCard extends StatelessWidget {
             padding: EdgeInsets.only(top: 10.0),
             child: _buildTitlePriceRow(),
           ),
-          AddressTag('Union Square, San Francisco'),
+          AddressTag(product.locationData.address),
           _buildActionButtons(context),
           // Text(product.userEmail)
         ],

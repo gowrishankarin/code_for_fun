@@ -15,7 +15,7 @@ class ProductPage extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        AddressTag('Union Square, San Francisco'),
+        AddressTag(product.locationData.address),
         Container(
             margin: EdgeInsets.symmetric(horizontal: 5.0),
             child: Text(
