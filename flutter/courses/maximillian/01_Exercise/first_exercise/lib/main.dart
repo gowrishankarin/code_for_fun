@@ -9,11 +9,13 @@ import './pages/product.dart';
 import './scoped-models/main.dart';
 import './models/product.dart';
 
+import './config.dart';
+
 void main() {
   //debugPaintSizeEnabled = true;
   //debugPaintBaselinesEnabled = true;
   //debugPaintPointersEnabled = true;
-  MapView.setApiKey('');
+  MapView.setApiKey(CONFIGURATIONS.googleAPIKey);
   runApp(MyApp());
 }
 
