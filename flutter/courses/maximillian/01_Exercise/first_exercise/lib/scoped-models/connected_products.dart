@@ -56,13 +56,8 @@ mixin ProductsModel on ConnectedProducts {
     });
   }
 
-  Future<bool> addProduct(
-    String title,
-    String description,
-    String image,
-    double price,
-    LocationData locationData
-  ) async {
+  Future<bool> addProduct(String title, String description, String image,
+      double price, LocationData locationData) async {
     try {
       _isLoading = true;
       notifyListeners();
@@ -91,13 +86,15 @@ mixin ProductsModel on ConnectedProducts {
       final Map<String, dynamic> responseData =
           Convert.json.decode(response.body);
       final Product newProduct = Product(
-          id: responseData['name'],
-          title: title,
-          description: description,
-          image: image,
-          price: price,
-          userEmail: _authenticatedUser.email,
-          userId: _authenticatedUser.id);
+        id: responseData['name'],
+        title: title,
+        description: description,
+        image: image,
+        price: price,
+        locationData: locationData,
+        userEmail: _authenticatedUser.email,
+        userId: _authenticatedUser.id,
+      );
       _products.add(newProduct);
       _isLoading = false;
       notifyListeners();
@@ -135,7 +132,7 @@ mixin ProductsModel on ConnectedProducts {
     });
   }
 
-  Future<Null> fetchProducts({bool onlyForUser=false}) {
+  Future<Null> fetchProducts({bool onlyForUser = false}) {
     _isLoading = true;
     notifyListeners();
     return http
@@ -158,6 +155,11 @@ mixin ProductsModel on ConnectedProducts {
             description: productData['description'],
             image: productData['image'],
             price: productData['price'],
+            locationData: LocationData(
+              address: productData['loc_address'],
+              latitude: productData['loc_lat'],
+              longitude: productData['loc_lng'],
+            ),
             userEmail: productData['userEmail'],
             userId: productData['userId'],
             isFavorite: productData['wishlistUsers'] == null
@@ -166,9 +168,11 @@ mixin ProductsModel on ConnectedProducts {
                     .containsKey(_authenticatedUser.id));
         fetchedProductList.add(product);
       });
-      _products = onlyForUser ? fetchedProductList.where((Product product) {
-        return product.userId == _authenticatedUser.id;
-      }).toList() : fetchedProductList;
+      _products = onlyForUser
+          ? fetchedProductList.where((Product product) {
+              return product.userId == _authenticatedUser.id;
+            }).toList()
+          : fetchedProductList;
       _isLoading = false;
       notifyListeners();
       _selProductId = null;
