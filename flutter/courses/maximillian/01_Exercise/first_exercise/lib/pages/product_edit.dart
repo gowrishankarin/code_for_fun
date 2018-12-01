@@ -29,6 +29,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
   final FocusNode _titleFocusNode = FocusNode();
   final FocusNode _descriptionFocusNode = FocusNode();
   final FocusNode _priceFocusNode = FocusNode();
+  // final TextEditingController _titleTextController = TextEditingController();
 
   Widget _buildTitleTextField(Product product) {
     return EnsureVisibleWhenFocused(
@@ -51,7 +52,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
         // },
         onSaved: (String value) {
           //setState(() {
-            _formData['title'] = value;
+          _formData['title'] = value;
           //});
         },
       ),
@@ -120,42 +121,43 @@ class _ProductEditPageState extends State<ProductEditPage> {
     _formKey.currentState.save();
     if (selectedProductIndex == -1) {
       addProduct(
-        //Product(
-        _formData['title'],
-        _formData['description'],
-        _formData['image'],
-        _formData['price'],
-        _formData['location']
-        //)
-        )
-        .then((bool success) {
-          if(success) {
-            Navigator.pushReplacementNamed(context, '/products')
+              //Product(
+              _formData['title'],
+              _formData['description'],
+              _formData['image'],
+              _formData['price'],
+              _formData['location']
+              //)
+              )
+          .then((bool success) {
+        if (success) {
+          Navigator.pushReplacementNamed(context, '/products')
               .then((_) => setSelectProduct(null));
-          } else {
-            showDialog(
+        } else {
+          showDialog(
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
                   title: Text('Something went wrong'),
                   content: Text('Please try again!'),
                   actions: <Widget>[
-                    FlatButton(child: Text('Okay'), onPressed: () => Navigator.of(context).pop(),)
+                    FlatButton(
+                      child: Text('Okay'),
+                      onPressed: () => Navigator.of(context).pop(),
+                    )
                   ],
                 );
-              }
-            );
-          }
-        });
+              });
+        }
+      });
     } else {
       updateProduct(
-          //Product(
-          _formData['title'],
-          _formData['description'],
-          _formData['image'],
-          _formData['price']
-          //)
-          );
+        _formData['title'],
+        _formData['description'],
+        _formData['image'],
+        _formData['price'],
+        _formData['location'],
+      );
     }
   }
 

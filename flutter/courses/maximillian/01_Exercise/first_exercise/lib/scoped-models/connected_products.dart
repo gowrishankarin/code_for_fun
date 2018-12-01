@@ -188,6 +188,7 @@ mixin ProductsModel on ConnectedProducts {
     String description,
     String image,
     double price,
+    LocationData locationData
   ) {
     _isLoading = true;
     notifyListeners();
@@ -198,7 +199,10 @@ mixin ProductsModel on ConnectedProducts {
           'https://www.livemint.com/rf/Image-621x414/LiveMint/Period2/2017/10/31/Photos/Processed/fruits-kFLF--621x414@LiveMint.jpg',
       'price': price,
       'userEmail': _authenticatedUser.email,
-      'userId': _authenticatedUser.id
+      'userId': _authenticatedUser.id,
+      'loc_address': locationData.address,
+      'loc_lat': locationData.latitude,
+      'loc_lng': locationData.longitude
     };
     return http
         .put(
@@ -213,6 +217,7 @@ mixin ProductsModel on ConnectedProducts {
         description: description,
         image: image,
         price: price,
+        locationData: locationData,
         userEmail: _authenticatedUser.email,
         userId: _authenticatedUser.id,
       );
@@ -236,6 +241,7 @@ mixin ProductsModel on ConnectedProducts {
       title: selectedProduct.title,
       description: selectedProduct.description,
       price: selectedProduct.price,
+      locationData: selectedProduct.locationData,
       image: selectedProduct.image,
       userEmail: _authenticatedUser.email,
       userId: _authenticatedUser.id,
