@@ -9,6 +9,10 @@ import '../helpers/ensure_visible.dart';
 import '../../models/location_data.dart';
 
 class LocationInput extends StatefulWidget {
+  final Function setLocation;
+
+  LocationInput(this.setLocation);
+
   @override
   State<StatefulWidget> createState() {
     return _LocationInputState();
@@ -39,6 +43,7 @@ class _LocationInputState extends State<LocationInput> {
       setState(() {
         _staticMapUri = null;
       });
+      widget.setLocation(null);
       return;
     }
     final Uri uri = Uri.https(
@@ -56,7 +61,7 @@ class _LocationInputState extends State<LocationInput> {
       latitude: coords['lat'],
       longitude: coords['lng'],
     );
-    //print(decodedResponse);
+    widget.setLocation(_locationData);
 
     final StaticMapProvider staticMapViewProvider =
         StaticMapProvider(CONFIGURATIONS.googleAPIKey);

@@ -8,6 +8,7 @@ import 'package:rxdart/subjects.dart';
 import '../models/product.dart';
 import '../models/user.dart';
 import '../models/auth.dart';
+import '../models/location_data.dart';
 
 class ConnectedProducts extends Model {
   List<Product> _products = [];
@@ -60,6 +61,7 @@ mixin ProductsModel on ConnectedProducts {
     String description,
     String image,
     double price,
+    LocationData locationData
   ) async {
     try {
       _isLoading = true;
@@ -71,7 +73,10 @@ mixin ProductsModel on ConnectedProducts {
             'https://www.livemint.com/rf/Image-621x414/LiveMint/Period2/2017/10/31/Photos/Processed/fruits-kFLF--621x414@LiveMint.jpg',
         'price': price,
         'userEmail': _authenticatedUser.email,
-        'userId': _authenticatedUser.id
+        'userId': _authenticatedUser.id,
+        'loc_lat': locationData.latitude,
+        'loc_lng': locationData.longitude,
+        'loc_address': locationData.address
       };
       final http.Response response = await http.post(
         'https://flutter-products-gs.firebaseio.com/products.json?auth=${_authenticatedUser.token}',
