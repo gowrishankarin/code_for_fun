@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
+import 'package:map_view/map_view.dart';
+
 import '../widgets/ui_elements/title_default.dart';
 import '../widgets/products/address_tag.dart';
 import '../widgets/products/price_tag.dart';
@@ -11,11 +13,47 @@ class ProductPage extends StatelessWidget {
 
   ProductPage(this.product);
 
+  void _showMap() {
+    final List<Marker> markers = <Marker>[
+      Marker('position', 'Position', product.locationData.latitude,
+          product.locationData.longitude)
+    ];
+    final CameraPosition cameraPosition = CameraPosition(
+      Location(
+        product.locationData.latitude,
+        product.locationData.longitude,
+      ),
+      14.0,
+    );
+    final mapView = MapView();
+    mapView.show(
+      MapOptions(
+        initialCameraPosition: cameraPosition,
+        mapViewType: MapViewType.normal,
+        title: 'Product Location',
+      ),
+      toolbarActions: [
+        ToolbarAction('Close', 1),
+      ],
+    );
+    mapView.onToolbarAction.listen((int id) {
+      if (id == 1) {
+        mapView.dismiss();
+      }
+    });
+    mapView.onMapReady.listen((_) {
+      mapView.setMarkers(markers);
+    });
+  }
+
   Widget _buildAddressPriceRow(Product product) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        AddressTag(product.locationData.address),
+        GestureDetector(
+          onTap: _showMap,
+          child: AddressTag(product.locationData.address),
+        ),
         Container(
             margin: EdgeInsets.symmetric(horizontal: 5.0),
             child: Text(

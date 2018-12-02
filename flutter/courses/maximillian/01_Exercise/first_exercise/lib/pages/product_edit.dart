@@ -29,9 +29,20 @@ class _ProductEditPageState extends State<ProductEditPage> {
   final FocusNode _titleFocusNode = FocusNode();
   final FocusNode _descriptionFocusNode = FocusNode();
   final FocusNode _priceFocusNode = FocusNode();
-  // final TextEditingController _titleTextController = TextEditingController();
+  final TextEditingController _titleTextController = TextEditingController();
 
   Widget _buildTitleTextField(Product product) {
+    if (product == null && _titleTextController.text.trim() == '') {
+      _titleTextController.text = '';
+    } else if (product != null && _titleTextController.text.trim() == '') {
+      _titleTextController.text = product.title;
+    } else if (product != null && _titleTextController.text.trim() != '') {
+      _titleTextController.text = _titleTextController.text;
+    } else if (product == null && _titleTextController.text.trim() != '') {
+      _titleTextController.text = _titleTextController.text;
+    } else {
+      _titleTextController.text = '';
+    }
     return EnsureVisibleWhenFocused(
       focusNode: _titleFocusNode,
       child: TextFormField(
@@ -39,7 +50,8 @@ class _ProductEditPageState extends State<ProductEditPage> {
         decoration: InputDecoration(
           labelText: 'Product Title',
         ),
-        initialValue: product == null ? '' : product.title,
+        controller: _titleTextController,
+        // initialValue: product == null ? '' : product.title,
         validator: (String value) {
           if (value.isEmpty || value.length < 5) {
             return 'Title is required and should be 5+ characters long';
@@ -100,9 +112,9 @@ class _ProductEditPageState extends State<ProductEditPage> {
           }
         },
         onSaved: (String value) {
-          setState(() {
-            _formData['price'] = double.parse(value);
-          });
+          //setState(() {
+          _formData['price'] = double.parse(value);
+          //});
         },
       ),
     );
@@ -122,7 +134,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
     if (selectedProductIndex == -1) {
       addProduct(
               //Product(
-              _formData['title'],
+              _titleTextController.text,
               _formData['description'],
               _formData['image'],
               _formData['price'],
@@ -152,12 +164,32 @@ class _ProductEditPageState extends State<ProductEditPage> {
       });
     } else {
       updateProduct(
-        _formData['title'],
+        _titleTextController.text,
         _formData['description'],
         _formData['image'],
         _formData['price'],
         _formData['location'],
-      );
+      ).then((bool success) {
+        if (success) {
+          Navigator.pushReplacementNamed(context, '/products')
+              .then((_) => setSelectProduct(null));
+        } else {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text('Something went wrong'),
+                  content: Text('Please try again!'),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text('Okay'),
+                      onPressed: () => Navigator.of(context).pop(),
+                    )
+                  ],
+                );
+              });
+        }
+      });
     }
   }
 

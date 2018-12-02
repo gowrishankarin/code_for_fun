@@ -208,8 +208,7 @@ mixin ProductsModel on ConnectedProducts {
         .put(
       'https://flutter-products-gs.firebaseio.com/products/${selectedProduct.id}.json?auth=${_authenticatedUser.token}',
       body: Convert.json.encode(updateData),
-    )
-        .then((http.Response response) {
+    ).then((http.Response response) {
       _isLoading = false;
       final Product updatedProduct = Product(
         id: selectedProduct.id,
@@ -279,7 +278,7 @@ mixin ProductsModel on ConnectedProducts {
 
   void selectProduct(String productId) {
     _selProductId = productId;
-    if (_selProductId != null) {
+    if (productId != null) {
       notifyListeners();
     }
   }
