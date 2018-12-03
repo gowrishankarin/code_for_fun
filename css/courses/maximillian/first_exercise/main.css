@@ -1,12 +1,20 @@
+body { /*Indirect Parent, Inheritance*/
+    font-family: 'Montserrat', sans-serif;
+}
+
 #product-overview {
     background: #ff1b68;
 }
 
-h1 {
+#product-overview  h1 { /*Combinator*/
     color: white;
     font-family: 'Anton', sans-serif;
 }
 
-.section-title {
+.section-title { 
     color: #2ddf5c;
+}
+
+h1 {
+    font-family: sans-serif;
 }
