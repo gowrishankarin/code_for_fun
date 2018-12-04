@@ -1,0 +1,32 @@
+body {
+    font-family: sans-serif;
+}
+
+h1 {
+    font-family: sans-serif;
+    color: rebeccapurple;
+}
+
+li {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+code {
+    font-family: monospace;
+    color: red;
+}
+
+.second-element {
+    color: green;
+}
+
+li ~ li {
+    background-color: black;
+    color: white; 
+}
+
+/* ol > li {
+    background-color: black;
+    color: white; 
+} */
+
