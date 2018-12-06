@@ -1,4 +1,7 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+
+import 'package:image_picker/image_picker.dart';
 
 class ImageInput extends StatefulWidget {
   @override
@@ -8,15 +11,59 @@ class ImageInput extends StatefulWidget {
 }
 
 class _ImageInputState extends State<ImageInput> {
+  void _getImage(BuildContext context, ImageSource source) {
+    ImagePicker.pickImage(source: source, maxHeight: 400.0, ).then((File image) {
+      Navigator.pop(context);
+    });
+  }
+  void _openImagePicker(BuildContext context) {
+    final textColor = Theme.of(context).primaryColor;
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+            height: 150.0,
+            padding: EdgeInsets.all(10.0),
+            child: Column(children: [
+              Text(
+                'Pick An Image',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                height: 10.0,
+              ),
+              FlatButton(
+                textColor: textColor,
+                child: Text('Use Camera'),
+                onPressed: () {
+                  _getImage(context, ImageSource.camera);
+                },
+              ),
+              FlatButton(
+                textColor: textColor,
+                child: Text('Use Gallery'),
+                onPressed: () {
+                  _getImage(context, ImageSource.gallery);
+                },
+              )
+            ]),
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     final buttonColor = Theme.of(context).accentColor;
     return Column(
       children: <Widget>[
         OutlineButton(
-          borderSide:
-              BorderSide(color: buttonColor),
-          onPressed: () {},
+          borderSide: BorderSide(
+            color: buttonColor,
+            width: 2.0,
+          ),
+          onPressed: () {
+            _openImagePicker(context);
+          },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
