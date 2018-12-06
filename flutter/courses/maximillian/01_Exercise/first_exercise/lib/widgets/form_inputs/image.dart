@@ -11,11 +11,20 @@ class ImageInput extends StatefulWidget {
 }
 
 class _ImageInputState extends State<ImageInput> {
+  File _imageFile;
+
   void _getImage(BuildContext context, ImageSource source) {
-    ImagePicker.pickImage(source: source, maxHeight: 400.0, ).then((File image) {
+    ImagePicker.pickImage(
+      source: source,
+      maxHeight: 400.0,
+    ).then((File image) {
+      setState(() {
+        _imageFile = image;
+      });
       Navigator.pop(context);
     });
   }
+
   void _openImagePicker(BuildContext context) {
     final textColor = Theme.of(context).primaryColor;
     showModalBottomSheet(
@@ -77,7 +86,19 @@ class _ImageInputState extends State<ImageInput> {
               )
             ],
           ),
-        )
+        ),
+        SizedBox(
+          height: 10.0,
+        ),
+        _imageFile == null
+            ? Text('Please pick an image')
+            : Image.file(
+                _imageFile,
+                fit: BoxFit.cover,
+                height: 300.0,
+                width: MediaQuery.of(context).size.width,
+                alignment: Alignment.topCenter,
+              )
       ],
     );
   }
