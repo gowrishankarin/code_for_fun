@@ -66,8 +66,7 @@ mixin ProductsModel on ConnectedProducts {
       {String imagePath}) async {
     final mimeTypeData = lookupMimeType(image.path).split('/');
     final imageUploadRequest = http.MultipartRequest(
-        'POST',
-        Uri.parse(CONFIGURATIONS.fbCloudStoragePath));
+        'POST', Uri.parse(CONFIGURATIONS.fbCloudStoragePath));
 
     print(mimeTypeData);
     print(image.path);
@@ -80,25 +79,25 @@ mixin ProductsModel on ConnectedProducts {
       ),
     );
     imageUploadRequest.files.add(file);
-    if(imagePath != null) {
+    if (imagePath != null) {
       imageUploadRequest.fields['imagePath'] = Uri.encodeComponent(imagePath);
     }
 
-    imageUploadRequest.headers['Authorization'] = 'Bearer ${_authenticatedUser.token}';
+    imageUploadRequest.headers['Authorization'] =
+        'Bearer ${_authenticatedUser.token}';
 
     try {
       final streamedResponse = await imageUploadRequest.send();
       final response = await http.Response.fromStream(streamedResponse);
-      if(response.statusCode != 200 && response.statusCode != 201) {
+      if (response.statusCode != 200 && response.statusCode != 201) {
         print('Something went wrong');
-        print(response.statusCode);
         print(Convert.json.decode(response.body));
         return null;
       }
 
-      final  responseData = Convert.json.decode(response.body);
+      final responseData = Convert.json.decode(response.body);
       return responseData;
-    } catch(error) {
+    } catch (error) {
       print(error);
       return null;
     }
@@ -110,10 +109,10 @@ mixin ProductsModel on ConnectedProducts {
       _isLoading = true;
       notifyListeners();
       final uploadData = await uploadImage(image);
-      if(uploadData == null) {
+      if (uploadData == null) {
         _isLoading = false;
         notifyListeners();
-      
+
         print('Upload Failed');
         return false;
       }
@@ -242,34 +241,51 @@ mixin ProductsModel on ConnectedProducts {
     });
   }
 
-  Future<bool> updateProduct(String title, String description, String image,
-      double price, LocationData locationData) {
-    _isLoading = true;
-    notifyListeners();
-    final Map<String, dynamic> updateData = {
-      'title': title,
-      'description': description,
-      'image':
-          'https://www.livemint.com/rf/Image-621x414/LiveMint/Period2/2017/10/31/Photos/Processed/fruits-kFLF--621x414@LiveMint.jpg',
-      'price': price,
-      'userEmail': _authenticatedUser.email,
-      'userId': _authenticatedUser.id,
-      'loc_address': locationData.address,
-      'loc_lat': locationData.latitude,
-      'loc_lng': locationData.longitude
-    };
-    return http
-        .put(
-      'https://flutter-products-gs.firebaseio.com/products/${selectedProduct.id}.json?auth=${_authenticatedUser.token}',
-      body: Convert.json.encode(updateData),
-    )
-        .then((http.Response response) {
+  Future<bool> updateProduct(String title, String description, File image,
+      double price, LocationData locationData) async {
+    try {
+      _isLoading = true;
+      notifyListeners();
+
+      String imageUrl = selectedProduct.image;
+      String imagePath = selectedProduct.imagePath;
+      if (image != null) {
+        final uploadData = await uploadImage(image);
+        if (uploadData == null) {
+          _isLoading = false;
+          notifyListeners();
+
+          print('Upload Failed');
+          return false;
+        }
+
+        imageUrl = uploadData['imageUrl'];
+        imagePath = uploadData['imagePath'];
+      }
+
+      final Map<String, dynamic> updateData = {
+        'title': title,
+        'description': description,
+        'imageUrl': imageUrl,
+        'imagePath': imagePath,
+        'price': price,
+        'userEmail': _authenticatedUser.email,
+        'userId': _authenticatedUser.id,
+        'loc_address': locationData.address,
+        'loc_lat': locationData.latitude,
+        'loc_lng': locationData.longitude
+      };
+      final http.Response response = await http.put(
+        'https://flutter-products-gs.firebaseio.com/products/${selectedProduct.id}.json?auth=${_authenticatedUser.token}',
+        body: Convert.json.encode(updateData),
+      );
       _isLoading = false;
       final Product updatedProduct = Product(
         id: selectedProduct.id,
         title: title,
         description: description,
-        image: image,
+        image: imageUrl,
+        imagePath: imagePath,
         price: price,
         locationData: locationData,
         userEmail: _authenticatedUser.email,
@@ -279,11 +295,11 @@ mixin ProductsModel on ConnectedProducts {
       _isLoading = false;
       notifyListeners();
       return true;
-    }).catchError((error) {
+    } catch (error) {
       _isLoading = false;
       notifyListeners();
       return false;
-    });
+    }
   }
 
   void toggleProductFavoriteStatus() async {
