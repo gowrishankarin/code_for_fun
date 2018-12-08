@@ -46,6 +46,7 @@ exports.storeImage = functions.https.onRequest((req, res) => {
             headers: req.headers
         });
         let uploadData;
+        let oldImagePath;
         busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
             const filePath = path.join(os.tmpdir(), filename);
             uploadData = {
@@ -94,7 +95,7 @@ exports.storeImage = functions.https.onRequest((req, res) => {
                     });
                 })
                 .catch(error => {
-                    return res.statusCode(401).json({
+                    return res.status(401).json({
                         error: 'Unauthorized!'
                     });
                 });   

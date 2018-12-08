@@ -1,14 +1,20 @@
 import 'dart:convert' as Convert;
+import 'dart:async';
+import 'dart:io';
+
 import 'package:scoped_model/scoped_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart' as SP;
-import 'dart:async';
 import 'package:rxdart/subjects.dart';
+import 'package:mime/mime.dart';
+import 'package:http_parser/http_parser.dart';
 
 import '../models/product.dart';
 import '../models/user.dart';
 import '../models/auth.dart';
 import '../models/location_data.dart';
+
+import '../config.dart';
 
 class ConnectedProducts extends Model {
   List<Product> _products = [];
@@ -56,11 +62,62 @@ mixin ProductsModel on ConnectedProducts {
     });
   }
 
-  Future<bool> addProduct(String title, String description, String image,
+  Future<Map<String, dynamic>> uploadImage(File image,
+      {String imagePath}) async {
+    final mimeTypeData = lookupMimeType(image.path).split('/');
+    final imageUploadRequest = http.MultipartRequest(
+        'POST',
+        Uri.parse(CONFIGURATIONS.fbCloudStoragePath));
+
+    print(mimeTypeData);
+    print(image.path);
+    final file = await http.MultipartFile.fromPath(
+      'image',
+      image.path,
+      contentType: MediaType(
+        mimeTypeData[0],
+        mimeTypeData[1],
+      ),
+    );
+    imageUploadRequest.files.add(file);
+    if(imagePath != null) {
+      imageUploadRequest.fields['imagePath'] = Uri.encodeComponent(imagePath);
+    }
+
+    imageUploadRequest.headers['Authorization'] = 'Bearer ${_authenticatedUser.token}';
+
+    try {
+      final streamedResponse = await imageUploadRequest.send();
+      final response = await http.Response.fromStream(streamedResponse);
+      if(response.statusCode != 200 && response.statusCode != 201) {
+        print('Something went wrong');
+        print(response.statusCode);
+        print(Convert.json.decode(response.body));
+        return null;
+      }
+
+      final  responseData = Convert.json.decode(response.body);
+      return responseData;
+    } catch(error) {
+      print(error);
+      return null;
+    }
+  }
+
+  Future<bool> addProduct(String title, String description, File image,
       double price, LocationData locationData) async {
     try {
       _isLoading = true;
       notifyListeners();
+      final uploadData = await uploadImage(image);
+      if(uploadData == null) {
+        _isLoading = false;
+        notifyListeners();
+      
+        print('Upload Failed');
+        return false;
+      }
+
       final Map<String, dynamic> productData = {
         'title': title,
         'description': description,
@@ -69,6 +126,8 @@ mixin ProductsModel on ConnectedProducts {
         'price': price,
         'userEmail': _authenticatedUser.email,
         'userId': _authenticatedUser.id,
+        'imagePath': uploadData['imagePath'],
+        'imageUrl': uploadData['imageUrl'],
         'loc_lat': locationData.latitude,
         'loc_lng': locationData.longitude,
         'loc_address': locationData.address
@@ -89,7 +148,7 @@ mixin ProductsModel on ConnectedProducts {
         id: responseData['name'],
         title: title,
         description: description,
-        image: image,
+        image: uploadData['imageUrl'],
         price: price,
         locationData: locationData,
         userEmail: _authenticatedUser.email,
@@ -183,13 +242,8 @@ mixin ProductsModel on ConnectedProducts {
     });
   }
 
-  Future<bool> updateProduct(
-    String title,
-    String description,
-    String image,
-    double price,
-    LocationData locationData
-  ) {
+  Future<bool> updateProduct(String title, String description, String image,
+      double price, LocationData locationData) {
     _isLoading = true;
     notifyListeners();
     final Map<String, dynamic> updateData = {
@@ -208,7 +262,8 @@ mixin ProductsModel on ConnectedProducts {
         .put(
       'https://flutter-products-gs.firebaseio.com/products/${selectedProduct.id}.json?auth=${_authenticatedUser.token}',
       body: Convert.json.encode(updateData),
-    ).then((http.Response response) {
+    )
+        .then((http.Response response) {
       _isLoading = false;
       final Product updatedProduct = Product(
         id: selectedProduct.id,
