@@ -121,8 +121,6 @@ mixin ProductsModel on ConnectedProducts {
       final Map<String, dynamic> productData = {
         'title': title,
         'description': description,
-        'image':
-            'https://www.livemint.com/rf/Image-621x414/LiveMint/Period2/2017/10/31/Photos/Processed/fruits-kFLF--621x414@LiveMint.jpg',
         'price': price,
         'userEmail': _authenticatedUser.email,
         'userId': _authenticatedUser.id,
@@ -149,6 +147,7 @@ mixin ProductsModel on ConnectedProducts {
         title: title,
         description: description,
         image: uploadData['imageUrl'],
+        imagePath: uploadData['imagePath'],
         price: price,
         locationData: locationData,
         userEmail: _authenticatedUser.email,
@@ -212,7 +211,8 @@ mixin ProductsModel on ConnectedProducts {
             id: productId,
             title: productData['title'],
             description: productData['description'],
-            image: productData['image'],
+            image: productData['imageUrl'],
+            imagePath: productData['imagePath'],
             price: productData['price'],
             locationData: LocationData(
               address: productData['loc_address'],
@@ -297,6 +297,7 @@ mixin ProductsModel on ConnectedProducts {
       price: selectedProduct.price,
       locationData: selectedProduct.locationData,
       image: selectedProduct.image,
+      imagePath: selectedProduct.imagePath,
       userEmail: _authenticatedUser.email,
       userId: _authenticatedUser.id,
       isFavorite: newFavoriteStatus,
@@ -322,6 +323,7 @@ mixin ProductsModel on ConnectedProducts {
         description: selectedProduct.description,
         price: selectedProduct.price,
         image: selectedProduct.image,
+        imagePath: selectedProduct.imagePath,
         userEmail: _authenticatedUser.email,
         userId: _authenticatedUser.id,
         isFavorite: !newFavoriteStatus,
