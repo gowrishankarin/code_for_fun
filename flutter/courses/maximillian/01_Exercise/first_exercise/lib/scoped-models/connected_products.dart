@@ -177,8 +177,9 @@ mixin ProductsModel on ConnectedProducts {
     notifyListeners();
     return http
         .delete(
-            'https://flutter-products-gs.firebaseio.com/products/${deletedProductId}.json')
+            'https://flutter-products-gs.firebaseio.com/products/${deletedProductId}.json?auth=${_authenticatedUser.token}')
         .then((http.Response response) {
+          print(response.body);
       _isLoading = false;
       notifyListeners();
       return true;
