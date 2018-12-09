@@ -97,49 +97,50 @@ class ProductPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-        onWillPop: () {
-          print('Back Button Pressed');
-          Navigator.pop(context, false);
-          return Future.value(false);
-        },
-        child: Scaffold(
-            appBar: AppBar(
-              title: Text(product.title),
-            ),
-            body: Center(
-              child: Column(
-                //mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  FadeInImage(
-                    image: NetworkImage(product.image),
-                    height: 300.0,
-                    fit: BoxFit.cover,
-                    placeholder: AssetImage('assets/food.jpg'),
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(10.0),
-                    child: TitleDefault(product.title),
-                  ),
-                  _buildAddressPriceRow(product),
-                  Container(
-                    margin: EdgeInsets.only(top: 10.0),
-                    child: Text(
-                      product.description,
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(10.0),
-                    child: IconButton(
-                      icon: Icon(Icons.delete),
-                      //child: Text('DELETE'),
-                      onPressed: () => _showWarningDialog(context),
-                    ),
-                  ),
-                ],
+      onWillPop: () {
+        Navigator.pop(context, false);
+        return Future.value(false);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(product.title),
+        ),
+        body: Center(
+          child: Column(
+            //mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              FadeInImage(
+                image: NetworkImage(product.image),
+                height: 300.0,
+                fit: BoxFit.cover,
+                placeholder: AssetImage('assets/food.jpg'),
               ),
-            ),
-            floatingActionButton: ProductFab(),));
+              Container(
+                padding: EdgeInsets.all(10.0),
+                child: TitleDefault(product.title),
+              ),
+              _buildAddressPriceRow(product),
+              Container(
+                margin: EdgeInsets.only(top: 10.0),
+                child: Text(
+                  product.description,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.all(10.0),
+                child: IconButton(
+                  icon: Icon(Icons.delete),
+                  //child: Text('DELETE'),
+                  onPressed: () => _showWarningDialog(context),
+                ),
+              ),
+            ],
+          ),
+        ),
+        floatingActionButton: ProductFab(product),
+      ),
+    );
   }
 }
