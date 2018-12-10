@@ -82,7 +82,7 @@ class _LocationInputState extends State<LocationInput> {
       );
       //widget.setLocation(_locationData);
     }
-    if(mounted) {
+    if (mounted) {
       final StaticMapProvider staticMapViewProvider =
           StaticMapProvider(CONFIGURATIONS.googleAPIKey);
       final staticMapUri = staticMapViewProvider.getStaticUriWithMarkers(
@@ -96,13 +96,12 @@ class _LocationInputState extends State<LocationInput> {
         maptype: StaticMapViewType.roadmap,
       );
       widget.setLocation(_locationData);
-    
+
       setState(() {
         _addressInputController.text = _locationData.address;
         _staticMapUri = staticMapUri;
       });
     }
-
   }
 
   Future<String> _getAddress(double lat, double lng) async {
@@ -124,17 +123,35 @@ class _LocationInputState extends State<LocationInput> {
 
   void _getUserLocation() async {
     final location = new GeoLoc.Location();
+    try {
+      final currentUserLocation = await location.getLocation();
+      final String address = await _getAddress(
+          currentUserLocation['latitude'], currentUserLocation['longitude']);
 
-    final currentUserLocation = await location.getLocation();
-    final String address = await _getAddress(
-        currentUserLocation['latitude'], currentUserLocation['longitude']);
-
-    _getStaticMap(
-      address,
-      geocode: false,
-      lat: currentUserLocation['latitude'],
-      lng: currentUserLocation['latitude'],
-    );
+      _getStaticMap(
+        address,
+        geocode: false,
+        lat: currentUserLocation['latitude'],
+        lng: currentUserLocation['latitude'],
+      );
+    } catch (error) {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Could not fetch Location'),
+              content: Text('Please add an address manually!'),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Okay'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                )
+              ],
+            );
+          });
+    }
   }
 
   void _updateLocation() {

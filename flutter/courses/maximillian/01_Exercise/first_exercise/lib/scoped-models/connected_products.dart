@@ -455,6 +455,7 @@ mixin UserModel on ConnectedProducts {
     _authenticatedUser = null;
     _authTimer.cancel();
     _userSubject.add(false);
+    _selProductId = null;
     final SP.SharedPreferences prefs = await SP.SharedPreferences.getInstance();
     prefs.remove('token');
     prefs.remove('userEmail');

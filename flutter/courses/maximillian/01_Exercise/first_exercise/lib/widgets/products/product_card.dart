@@ -9,9 +9,8 @@ import '../../scoped-models/main.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
-  final int productIndex;
-
-  ProductCard(this.product, this.productIndex);
+  
+  ProductCard(this.product);
 
   Widget _buildTitlePriceRow() {
     return Row(
@@ -37,21 +36,21 @@ class ProductCard extends StatelessWidget {
             iconSize: 24,
             color: Theme.of(context).primaryColor,
             onPressed: () {
-              model.selectProduct(model.allProducts[productIndex].id);
+              model.selectProduct(product.id);
               Navigator.pushNamed<bool>(
                 context,
-                '/product/' + model.allProducts[productIndex].id,
+                '/product/' + product.id,
               ).then((_) => model.selectProduct(null));
             },
           ),
           IconButton(
-            icon: Icon(model.allProducts[productIndex].isFavorite
+            icon: Icon(product.isFavorite
                 ? Icons.favorite
                 : Icons.favorite_border),
             iconSize: 24,
             color: Colors.red,
             onPressed: () {
-              model.selectProduct(model.allProducts[productIndex].id);
+              model.selectProduct(product.id);
               model.toggleProductFavoriteStatus();
             },
           ),
