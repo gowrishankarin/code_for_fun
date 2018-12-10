@@ -111,13 +111,13 @@ class _ProductEditPageState extends State<ProductEditPage> {
         initialValue: product == null ? '' : product.price.toString(),
         validator: (String value) {
           if (value.isEmpty ||
-              !RegExp(r'^(?:[1-9]\d*|0)?(?:\.\d+)?$').hasMatch(value)) {
+              !RegExp(r'^(?:[1-9]\d*|0)?(?:[.,]\d+)?$').hasMatch(value)) {
             return 'Price is required and should be 5+ characters long';
           }
         },
         onSaved: (String value) {
           //setState(() {
-          _formData['price'] = double.parse(value);
+          _formData['price'] = double.parse(value.replaceFirst(RegExp(r','), '.'));
           //});
         },
       ),
