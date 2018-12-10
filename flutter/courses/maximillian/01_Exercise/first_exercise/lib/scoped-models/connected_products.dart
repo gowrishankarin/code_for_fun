@@ -177,7 +177,7 @@ mixin ProductsModel on ConnectedProducts {
     notifyListeners();
     return http
         .delete(
-            'https://flutter-products-gs.firebaseio.com/products/${deletedProductId}.json?auth=${_authenticatedUser.token}')
+            'https://flutter-products-gs.firebaseio.com/products/$deletedProductId.json?auth=${_authenticatedUser.token}')
         .then((http.Response response) {
           print(response.body);
       _isLoading = false;
@@ -190,8 +190,12 @@ mixin ProductsModel on ConnectedProducts {
     });
   }
 
-  Future<Null> fetchProducts({bool onlyForUser = false}) {
+  Future<Null> fetchProducts({bool onlyForUser = false, clearExisting = false}) {
     _isLoading = true;
+    if(clearExisting) {
+      _products = [];
+    }
+    
     notifyListeners();
     return http
         .get(
@@ -276,7 +280,7 @@ mixin ProductsModel on ConnectedProducts {
         'loc_lat': locationData.latitude,
         'loc_lng': locationData.longitude
       };
-      final http.Response response = await http.put(
+      await http.put(
         'https://flutter-products-gs.firebaseio.com/products/${selectedProduct.id}.json?auth=${_authenticatedUser.token}',
         body: Convert.json.encode(updateData),
       );
@@ -346,7 +350,8 @@ mixin ProductsModel on ConnectedProducts {
         imagePath: selectedProduct.imagePath,
         userEmail: _authenticatedUser.email,
         userId: _authenticatedUser.id,
-        isFavorite: !newFavoriteStatus,
+        isFavorite: !newFavoriteStatus, 
+        locationData: selectedProduct.locationData,
       );
       _products[toggledProductIndex] = updatedProduct;
       notifyListeners();

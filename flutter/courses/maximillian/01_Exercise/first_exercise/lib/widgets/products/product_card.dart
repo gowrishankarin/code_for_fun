@@ -74,9 +74,15 @@ class ProductCard extends StatelessWidget {
               placeholder: AssetImage('assets/food.jpg'),
             ),
           ),
+          SizedBox(
+            height: 10.0,
+          ),
           Container(
             padding: EdgeInsets.only(top: 10.0),
             child: _buildTitlePriceRow(),
+          ),
+          SizedBox(
+            height: 10.0,
           ),
           AddressTag(product.locationData.address),
           _buildActionButtons(context),
