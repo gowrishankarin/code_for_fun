@@ -303,10 +303,13 @@ mixin ProductsModel on ConnectedProducts {
     }
   }
 
-  void toggleProductFavoriteStatus() async {
+  void toggleProductFavoriteStatus(Product toggledProduct) async {
     final bool isCurrentlyFavorite = _products[selectedProductIndex].isFavorite;
     final bool newFavoriteStatus = !isCurrentlyFavorite;
 
+    final int toggledProductIndex = _products.indexWhere((Product product) {
+      return product.id == toggledProduct.id;
+    });
     final Product updatedProduct = Product(
       id: selectedProduct.id,
       title: selectedProduct.title,
@@ -319,7 +322,7 @@ mixin ProductsModel on ConnectedProducts {
       userId: _authenticatedUser.id,
       isFavorite: newFavoriteStatus,
     );
-    _products[selectedProductIndex] = updatedProduct;
+    _products[toggledProductIndex] = updatedProduct;
     notifyListeners();
     http.Response response;
     if (newFavoriteStatus) {
@@ -345,7 +348,7 @@ mixin ProductsModel on ConnectedProducts {
         userId: _authenticatedUser.id,
         isFavorite: !newFavoriteStatus,
       );
-      _products[selectedProductIndex] = updatedProduct;
+      _products[toggledProductIndex] = updatedProduct;
       notifyListeners();
     }
   }

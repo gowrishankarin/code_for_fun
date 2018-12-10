@@ -9,18 +9,20 @@ import '../../scoped-models/main.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
-  
+
   ProductCard(this.product);
 
   Widget _buildTitlePriceRow() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        TitleDefault(product.title),
-        SizedBox(
-          width: 8.0,
+        Flexible(child: TitleDefault(product.title)),
+        Flexible(
+          child: SizedBox(
+            width: 8.0,
+          ),
         ),
-        PriceTag(product.price.toString()),
+        Flexible(child: PriceTag(product.price.toString())),
       ],
     );
   }
@@ -44,14 +46,13 @@ class ProductCard extends StatelessWidget {
             },
           ),
           IconButton(
-            icon: Icon(product.isFavorite
-                ? Icons.favorite
-                : Icons.favorite_border),
+            icon: Icon(
+                product.isFavorite ? Icons.favorite : Icons.favorite_border),
             iconSize: 24,
             color: Colors.red,
             onPressed: () {
-              model.selectProduct(product.id);
-              model.toggleProductFavoriteStatus();
+              // model.selectProduct(product.id);
+              model.toggleProductFavoriteStatus(product);
             },
           ),
         ],
