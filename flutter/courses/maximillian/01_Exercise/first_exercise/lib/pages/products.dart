@@ -29,6 +29,7 @@ class _ProductsPageState extends State<ProductsPage>{
         children: <Widget>[
           AppBar(
             automaticallyImplyLeading: false,
+            elevation: Theme.of(context).platform == TargetPlatform.iOS ? 0.0 : 4.0,
             title: Text('Choose'),
           ),
           ListTile(

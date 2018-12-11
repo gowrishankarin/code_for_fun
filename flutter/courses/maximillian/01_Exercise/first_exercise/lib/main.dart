@@ -10,6 +10,7 @@ import './scoped-models/main.dart';
 import './models/product.dart';
 
 import 'widgets/helpers/custom_route.dart';
+import './shared/adaptive_theme.dart';
 
 import './config.dart';
 
@@ -48,16 +49,7 @@ class _MyAppState extends State<MyApp> {
     return ScopedModel<MainModel>(
       model: _model,
       child: MaterialApp(
-        theme: ThemeData(
-          brightness: Brightness.light,
-          primarySwatch: Colors.lightGreen,
-          accentColor: Colors.green,
-          buttonColor: Colors.green,
-          //buttonTheme: ButtonThemeData(
-          //  textTheme: TextTheme()
-          //)
-          //fontFamily: 'Oswald'
-        ),
+        theme: getAdaptiveThemeData(context),
         routes: {
           '/': (BuildContext context) =>
               _isAuthenticated == false ? AuthPage() : ProductsPage(_model),

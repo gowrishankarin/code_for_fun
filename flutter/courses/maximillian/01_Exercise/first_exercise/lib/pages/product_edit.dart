@@ -278,6 +278,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
             ? pageContent
             : Scaffold(
                 appBar: AppBar(
+                  elevation: Theme.of(context).platform == TargetPlatform.iOS ? 0.0 : 4.0,
                   title: Text('Edit Product'),
                 ),
                 body: pageContent,
