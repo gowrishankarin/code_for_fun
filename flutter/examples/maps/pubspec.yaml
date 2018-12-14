@@ -23,6 +23,7 @@ dependencies:
     git:
       url: git://github.com/flutter/plugins
       path: packages/google_maps_flutter
+  charts_flutter: ^0.5.0
 
 dev_dependencies:
   flutter_test:
