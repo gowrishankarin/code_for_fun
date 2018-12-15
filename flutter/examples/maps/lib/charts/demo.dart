@@ -43,8 +43,9 @@ class _ChartsDemoState extends State<ChartsDemo> {
         child: chart,
       ),
     );
-    return Center(
-      child: Column(
+    return Scaffold(
+      appBar: AppBar(title: Text('Charts'), ),
+      body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           new Text('You have pushed the button this many times'),

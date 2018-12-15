@@ -13,9 +13,9 @@ class _MapsDemoState extends State<MapsDemo> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(15.0),
-      child: Column(
+    return Scaffold(
+      appBar: AppBar(title: Text('Maps'), ),
+      body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           Center(
