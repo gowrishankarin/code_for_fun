@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import './maps/demo.dart';
 import './charts/demo.dart';
+import './flipbar/demo.dart';
 
 void main() => runApp(MyApp());
 
@@ -87,6 +88,15 @@ class _MyHomePageState extends State<MyHomePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => ChartsDemo()),
+                );
+              },
+            ),
+            RaisedButton(
+              child: Text('Flip Bar'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => FlipBarDemo()),
                 );
               },
             )

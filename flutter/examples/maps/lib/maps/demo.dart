@@ -14,7 +14,9 @@ class _MapsDemoState extends State<MapsDemo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Maps'), ),
+      appBar: AppBar(
+        title: Text('Maps'),
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
@@ -24,10 +26,11 @@ class _MapsDemoState extends State<MapsDemo> {
               child: GoogleMap(
                 onMapCreated: _onMapCreated,
                 initialCameraPosition: const CameraPosition(
-                    bearing: 270.0,
-                    target: LatLng(51.5160895, -0.1294527),
-                    tilt: 30.0,
-                    zoom: 17.0),
+                  bearing: 270.0,
+                  target: LatLng(51.5160895, -0.1294527),
+                  tilt: 30.0,
+                  zoom: 17.0,
+                ),
               ),
             ),
           ),
@@ -39,10 +42,11 @@ class _MapsDemoState extends State<MapsDemo> {
                     mapController.animateCamera(
                       CameraUpdate.newCameraPosition(
                         const CameraPosition(
-                            bearing: 270.0,
-                            target: LatLng(51.5160895, -0.1294527),
-                            tilt: 30.0,
-                            zoom: 17.0),
+                          bearing: 270.0,
+                          target: LatLng(51.5160895, -0.1294527),
+                          tilt: 30.0,
+                          zoom: 17.0,
+                        ),
                       ),
                     );
                   },
