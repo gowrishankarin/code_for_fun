@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import './maps/demo.dart';
 import './charts/demo.dart';
 import './flipbar/demo.dart';
+import './auth/google/google_auth.dart';
 
 void main() => runApp(MyApp());
 
@@ -97,6 +98,15 @@ class _MyHomePageState extends State<MyHomePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => FlipBarDemo()),
+                );
+              },
+            ),
+            RaisedButton(
+              child: Text('Google Auth'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SignIn()),
                 );
               },
             )
