@@ -1,9 +1,18 @@
+* {
+    box-sizing: border-box;
+}
 body { /*Indirect Parent, Inheritance*/
     font-family: 'Montserrat', sans-serif;
+    margin: 0;
 }
 
 #product-overview {
     background: #ff1b68;
+    width: 100%;
+    padding: 10px;
+    border: 15px solid black;
+    border-style: solid;
+    
 }
 
 #product-overview  h1 { /*Combinator*/
