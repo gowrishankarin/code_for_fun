@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
+import './config.dart';
+
 const kAndroidUserAgent =
     'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Mobile Safari/537.36';
 
@@ -31,42 +33,46 @@ class MyApp extends StatelessWidget {
       '/widget': (_) {
         return WebviewScaffold(
           url: selectedUrl,
-          appBar: AppBar(
-            title: const Text('Widget Web View'),
-          ),
           withZoom: true,
-          withLocalStorage: true,
-          hidden: true,
-          initialChild: Container(
-            color: Colors.redAccent,
-            child: const Center(
-              child: Text('Waiting...'),
-            ),
-          ),
-          bottomNavigationBar: BottomAppBar(
-            child: Row(
-              children: <Widget>[
-                IconButton(
-                  icon: const Icon(Icons.arrow_back_ios),
-                  onPressed: () {
-                    flutterWebviewPlugin.goBack();
-                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.arrow_forward_ios),
-                  onPressed: () {
-                    flutterWebviewPlugin.goForward();
-                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.autorenew),
-                  onPressed: () {
-                    flutterWebviewPlugin.reload();
-                  },
-                ),
-              ],
-            ),
-          ),
+          userAgent: kAndroidUserAgent,
+          //clearCache: true,
+          //clearCookies: true,
+          // appBar: AppBar(
+          //   title: const Text('Widget Web View'),
+          // ),
+          // withZoom: true,
+          // withLocalStorage: true,
+          // hidden: true,
+          // initialChild: Container(
+          //   color: Colors.redAccent,
+          //   child: const Center(
+          //     child: Text('Waiting...'),
+          //   ),
+          // ),
+          // bottomNavigationBar: BottomAppBar(
+          //   child: Row(
+          //     children: <Widget>[
+          //       IconButton(
+          //         icon: const Icon(Icons.arrow_back_ios),
+          //         onPressed: () {
+          //           flutterWebviewPlugin.goBack();
+          //         },
+          //       ),
+          //       IconButton(
+          //         icon: Icon(Icons.arrow_forward_ios),
+          //         onPressed: () {
+          //           flutterWebviewPlugin.goForward();
+          //         },
+          //       ),
+          //       IconButton(
+          //         icon: Icon(Icons.autorenew),
+          //         onPressed: () {
+          //           flutterWebviewPlugin.reload();
+          //         },
+          //       ),
+          //     ],
+          //   ),
+          // ),
         );
       }
     };
@@ -83,8 +89,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
   final flutterWebviewPlugin = FlutterWebviewPlugin();
   StreamSubscription _onDestroy;
   StreamSubscription<String> _onUrlChanged;
@@ -124,6 +128,24 @@ class _MyHomePageState extends State<MyHomePage> {
       if (mounted) {
         setState(() {
           _history.add('onUrlChanged: $url');
+          if (url.startsWith(CONFIGURATIONS.redirectUri)) {
+            String code = (Uri.parse(url).queryParameters.values.toList()[0]);
+            debugPrint(code);
+            print(url);
+            flutterWebviewPlugin.close();
+            Navigator.of(context).pushNamed('/');
+
+            // Make a post call for access token with following payload.
+            // /oauth2/v4/token
+
+            //code=4/P7q7W91a-oMsCeLvIaQm6bTrgtp7&
+            // client_id=your_client_id&
+            // client_secret=your_client_secret&
+            // redirect_uri=https://oauth2.example.com/code&
+            // grant_type=authorization_code
+
+            
+          }
         });
       }
     });
@@ -178,12 +200,6 @@ class _MyHomePageState extends State<MyHomePage> {
     super.dispose();
   }
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -224,9 +240,33 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             RaisedButton(
               onPressed: () {
-                Navigator.of(context).pushNamed('/widget');
+                selectedUrl = 'https://github.com';
+                Navigator.of(context).pushNamed('/widget').then((response) {
+                  print(response);
+                });
               },
               child: const Text('Open widget webview'),
+            ),
+            RaisedButton(
+              onPressed: () {
+                Map<String, String> queryParams = {
+                  'client_id': CONFIGURATIONS.googleAppId,
+                  'redirect_uri': CONFIGURATIONS.redirectUri,
+                  'response_type': 'code',
+                  'scope': 'email'
+                };
+
+                String uri = Uri.https(
+                  'accounts.google.com',
+                  '/o/oauth2/v2/auth',
+                  queryParams,
+                ).toString();
+                selectedUrl = uri;
+                Navigator.of(context).pushNamed('/widget').then((response) {
+                  //print(response);
+                });
+              },
+              child: const Text('Ivy Sign In'),
             ),
             Container(
               padding: const EdgeInsets.all(24.0),
@@ -258,7 +298,9 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: () {
+
+        },
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
