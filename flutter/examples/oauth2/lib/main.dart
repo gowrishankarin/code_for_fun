@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:convert' as Convert;
 
 import 'package:flutter/material.dart';
 
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:http/http.dart' as http;
 
 import './config.dart';
 
@@ -125,26 +127,21 @@ class _MyHomePageState extends State<MyHomePage> {
     });
 
     _onUrlChanged = flutterWebviewPlugin.onUrlChanged.listen((String url) {
+      print('COOKIES');
+      flutterWebviewPlugin.getCookies().then<Map<String, String>>((response) {
+        print(response);
+      });
       if (mounted) {
         setState(() {
           _history.add('onUrlChanged: $url');
+          if (url.startsWith(CONFIGURATIONS.ivyEndPoint + 'manufacturers')) {}
           if (url.startsWith(CONFIGURATIONS.redirectUri)) {
             String code = (Uri.parse(url).queryParameters.values.toList()[0]);
             debugPrint(code);
             print(url);
+            selectedUrl = code;
             flutterWebviewPlugin.close();
             Navigator.of(context).pushNamed('/');
-
-            // Make a post call for access token with following payload.
-            // /oauth2/v4/token
-
-            //code=4/P7q7W91a-oMsCeLvIaQm6bTrgtp7&
-            // client_id=your_client_id&
-            // client_secret=your_client_secret&
-            // redirect_uri=https://oauth2.example.com/code&
-            // grant_type=authorization_code
-
-            
           }
         });
       }
@@ -268,6 +265,34 @@ class _MyHomePageState extends State<MyHomePage> {
               },
               child: const Text('Ivy Sign In'),
             ),
+            RaisedButton(
+              onPressed: () {
+                String uri = Uri.https(
+                  'www.googleapis.com',
+                  '/oauth2/v4/token',
+                ).toString();
+
+                final payload = {
+                  'code': selectedUrl,
+                  'client_id': CONFIGURATIONS.googleAppId,
+                  'client_secret': CONFIGURATIONS.googleSecret,
+                  'redirect_uri': CONFIGURATIONS.redirectUri,
+                  'grant_type': 'authorization_code',
+                };
+
+                final headers = {
+                  'Content-Type': 'application/x-www-form-urlencoded'
+                };
+
+                http
+                    .post(uri, body: payload, headers: headers)
+                    .then((http.Response response) {
+                  final formattedResponse = Convert.json.decode(response.body);
+                  print(formattedResponse);
+                });
+              },
+              child: Text('Get Access Token'),
+            ),
             Container(
               padding: const EdgeInsets.all(24.0),
               child: TextField(
@@ -298,9 +323,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-
-        },
+        onPressed: () {},
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
