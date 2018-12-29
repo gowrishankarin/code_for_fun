@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'book_shelf.dart';
+
 void main() => runApp(BookReaderApp());
 
 class BookReaderApp extends StatelessWidget {
@@ -72,27 +74,28 @@ class _BookReaderHomePageState extends State<BookReaderHomePage>
             Opacity(
               opacity: animation.value,
               child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30.0)
-                ),
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(30.0)),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(50.0),
                   child: MaterialButton(
                     minWidth: 150.0,
                     onPressed: () {
                       controller.forward();
-                      Future.delayed(Duration(milliseconds: 250)).then((_) => Navigator.of(context).push(
-                        MaterialPageRoute<Null>(builder: (BuildContext context) {
-                          return null;
-                        })
-                      ));
+                      Future.delayed(Duration(milliseconds: 250)).then((_) =>
+                          Navigator.of(context).push(MaterialPageRoute<Null>(
+                              builder: (BuildContext context) {
+                            return BookShelf();
+                          })));
                     },
                     color: Colors.white,
-                    child: new Text('Start Exploring', style: TextStyle(
-                      color: Colors.black87,
-                      fontSize: 17.0,
-                      fontWeight: FontWeight.w500
-                    ),),
+                    child: new Text(
+                      'Start Exploring',
+                      style: TextStyle(
+                          color: Colors.black87,
+                          fontSize: 17.0,
+                          fontWeight: FontWeight.w500),
+                    ),
                   ),
                 ),
               ),
