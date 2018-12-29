@@ -153,6 +153,11 @@ doc/api/
 .pub/
 build/
 
+config.dart
+flutter-products-gs.json
+GoogleService-Info.plist
+
+
 # Android related
 **/android/**/gradle-wrapper.jar
 **/android/.gradle

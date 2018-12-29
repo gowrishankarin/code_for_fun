@@ -7,6 +7,9 @@ import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:http/http.dart' as http;
 
 import './config.dart';
+import './jwt.dart';
+
+import 'package:corsac_jwt/corsac_jwt.dart';
 
 const kAndroidUserAgent =
     'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Mobile Safari/537.36';
@@ -37,8 +40,8 @@ class MyApp extends StatelessWidget {
           url: selectedUrl,
           withZoom: true,
           userAgent: kAndroidUserAgent,
-          //clearCache: true,
-          //clearCookies: true,
+          clearCache: true,
+          clearCookies: true,
           // appBar: AppBar(
           //   title: const Text('Widget Web View'),
           // ),
@@ -127,7 +130,6 @@ class _MyHomePageState extends State<MyHomePage> {
     });
 
     _onUrlChanged = flutterWebviewPlugin.onUrlChanged.listen((String url) {
-      print('COOKIES');
       flutterWebviewPlugin.getCookies().then<Map<String, String>>((response) {
         print(response);
       });
@@ -289,6 +291,39 @@ class _MyHomePageState extends State<MyHomePage> {
                     .then((http.Response response) {
                   final formattedResponse = Convert.json.decode(response.body);
                   print(formattedResponse);
+                  final String access_token = formattedResponse['access_token'];
+                  http.get(
+                      'https://www.googleapis.com/oauth2/v1/userinfo?alt=json',
+                      headers: {
+                        'Authorization': 'Bearer $access_token'
+                      }).then((http.Response response) {
+                    print(response.statusCode.toString());
+                    var decodedResponse = Convert.json.decode(response.body);
+                    print('DECODED RESPONSE - USER INFO');
+                    print(decodedResponse);
+                    JWTToken jwtToken = JWTToken();
+                    String email = decodedResponse['email'];
+                    String token = jwtToken.sign({'email': email});
+                    print(token);
+                    http
+                        .get(CONFIGURATIONS.ivyEndPoint +
+                            '/auth/local/verify-oauth2?token=$token&email=$email')
+                        .then((http.Response ivResponse) {
+                          print('IVY RESPONSE');
+                          print(ivResponse.body);
+                          print(ivResponse.statusCode);
+                          var decodedIvyRes = Convert.json.decode(ivResponse.body);
+                          var token = decodedIvyRes['token'];
+                      print(token);
+                      http.get(CONFIGURATIONS.ivyEndPoint + '/api/manufacturers', headers: {
+                        'Authorization': 'Bearer $token'
+                      }).then((http.Response response) {
+                        var manufacturerRes = Convert.json.decode(response.body);
+                        print(manufacturerRes);
+                      });
+                    });
+                  });
+                  //print(formattedResponse);
                 });
               },
               child: Text('Get Access Token'),
@@ -317,6 +352,17 @@ class _MyHomePageState extends State<MyHomePage> {
                 });
               },
               child: const Text('Cookies'),
+            ),
+            RaisedButton(
+              onPressed: () {
+                JWTToken jwtToken = JWTToken();
+                String token =
+                    jwtToken.sign({'email': 'gowrishankar.m@ivymobility.com'});
+                print(token);
+                jwtToken.verify(
+                    token, JWTHmacSha256Signer(CONFIGURATIONS.googleSecret));
+              },
+              child: const Text('JWT Tokens'),
             ),
             Text(_history.join('\n'))
           ],
