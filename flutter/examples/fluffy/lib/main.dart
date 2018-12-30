@@ -49,55 +49,69 @@ class _BookReaderHomePageState extends State<BookReaderHomePage>
     // TODO: implement build
     return Scaffold(
       body: Container(
-        color: Colors.blue[900],
+        color: Colors.lightGreen,
         child: Stack(
           children: <Widget>[
-            Hero(
-              tag: 'image-hero',
-              child: Container(
-                  margin: const EdgeInsets.only(bottom: 20.0),
-                  child: Image.asset('assets/images/owl.png')),
-            ),
-            Hero(
-              tag: 'hero-text',
-              child: Container(
-                margin: EdgeInsets.only(bottom: 20.0),
-                child: new Text(
-                  'Discover, Learn, Elevate',
-                  style: const TextStyle(
-                      fontSize: 20.0,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w200),
-                ),
-              ),
-            ),
-            Opacity(
-              opacity: animation.value,
-              child: Container(
-                decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(30.0)),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(50.0),
-                  child: MaterialButton(
-                    minWidth: 150.0,
-                    onPressed: () {
-                      controller.forward();
-                      Future.delayed(Duration(milliseconds: 250)).then((_) =>
-                          Navigator.of(context).push(MaterialPageRoute<Null>(
-                              builder: (BuildContext context) {
-                            return BookShelf();
-                          })));
-                    },
-                    color: Colors.white,
-                    child: new Text(
-                      'Start Exploring',
-                      style: TextStyle(
-                          color: Colors.black87,
-                          fontSize: 17.0,
-                          fontWeight: FontWeight.w500),
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Hero(
+                    tag: 'image-hero',
+                    child: Container(
+                        margin: const EdgeInsets.only(bottom: 20.0),
+                        child: Image.asset(
+                          'assets/images/insights_login.png',
+                          width: 170.0,
+                          height: 170.0,
+                          color: Colors.white,
+                        )),
+                  ),
+                  Hero(
+                    tag: 'hero-text',
+                    child: Container(
+                      margin: EdgeInsets.only(bottom: 20.0),
+                      child: new Text(
+                        'Explore, Analyze, Discover',
+                        style: const TextStyle(
+                            fontSize: 20.0,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w200),
+                      ),
                     ),
                   ),
-                ),
+                  Opacity(
+                    opacity: animation.value,
+                    child: Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20.0)),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(25.0),
+                        child: MaterialButton(
+                          minWidth: 150.0,
+                          onPressed: () {
+                            controller.forward();
+                            Future.delayed(Duration(milliseconds: 250)).then(
+                                (_) => Navigator.of(context).push(
+                                        MaterialPageRoute<Null>(
+                                            builder: (BuildContext context) {
+                                      return BookShelf();
+                                    })));
+                          },
+                          color: Colors.white,
+                          child: new Text(
+                            'Start Exploring',
+                            style: TextStyle(
+                              color: Colors.black87,
+                              fontSize: 17.0,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],

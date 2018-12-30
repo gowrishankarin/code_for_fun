@@ -11,6 +11,30 @@ class BookShelf extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
+            Hero(
+              tag: 'image-hero',
+              child: Container(
+                  margin: const EdgeInsets.only(bottom: 20.0),
+                  child: Image.asset(
+                    'assets/images/insights_login.png',
+                    width: 50.0,
+                    height: 50.0,
+                    color: Colors.white,
+                  )),
+            ),
+            Hero(
+              tag: 'hero-text',
+              child: Container(
+                margin: EdgeInsets.only(bottom: 20.0),
+                child: new Text(
+                  'Explore, Analyze, Discover',
+                  style: const TextStyle(
+                      fontSize: 20.0,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w200),
+                ),
+              ),
+            ),
             Container(
               height: 450.0,
               width: double.infinity,
@@ -25,7 +49,10 @@ class BookShelf extends StatelessWidget {
                 length: 3,
                 child: Column(
                   children: <Widget>[
-                    new TabBar(
+                    TabBar(
+                      indicatorWeight: 3.0,
+                      isScrollable: true,
+                      labelColor: Colors.black87,
                       tabs: <Widget>[
                         Tab(
                           text: 'Books',
