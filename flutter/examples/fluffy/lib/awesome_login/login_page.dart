@@ -18,6 +18,10 @@ class LoginPage extends StatefulWidget {
 class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  bool _obscureTextLogin = true;
+  bool _obscureTextSignup = true;
+  bool _obscureTextSignupConfirm = true;
+
   PageController _pageController;
 
   Color left = Colors.black;
@@ -83,6 +87,7 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
                       ),
                       ConstrainedBox(
                         constraints: BoxConstraints.expand(),
+                        child: _buildSignUp(context),
                       )
                     ],
                   ),
@@ -190,7 +195,7 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
                         padding: EdgeInsets.only(
                             top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
                         child: TextField(
-                          obscureText: true,
+                          obscureText: _obscureTextLogin,
                           style: TextStyle(
                               fontFamily: 'WorkSansSemiBold',
                               fontSize: 16.0,
@@ -274,7 +279,7 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
                     fontFamily: 'WorkSansMedium'),
               ),
             ),
-          ), 
+          ),
           Padding(
             padding: EdgeInsets.only(top: 10.0),
             child: Row(
@@ -282,48 +287,39 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
               children: <Widget>[
                 Container(
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Colors.white10,
-                        Colors.white
-                      ],
-                      begin: FractionalOffset(0.0, 0.0),
-                      end: FractionalOffset(1.0, 1.0),
-                      stops: [0.0, 1.0],
-                      tileMode: TileMode.clamp
-                    )
-                  ),
+                      gradient: LinearGradient(
+                          colors: [Colors.white10, Colors.white],
+                          begin: FractionalOffset(0.0, 0.0),
+                          end: FractionalOffset(1.0, 1.0),
+                          stops: [0.0, 1.0],
+                          tileMode: TileMode.clamp)),
                   width: 100.0,
                   height: 1.0,
-                ), 
+                ),
                 Padding(
                   padding: EdgeInsets.only(left: 15.0, right: 15.0),
-                  child: Text("Or",
+                  child: Text(
+                    "Or",
                     style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16.0,
-                      fontFamily: 'WorkSansMedium'
-                    ),
+                        color: Colors.white,
+                        fontSize: 16.0,
+                        fontFamily: 'WorkSansMedium'),
                   ),
                 ),
                 Container(
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Colors.white,
-                        Colors.white10
-                      ],
-                      begin: FractionalOffset(0.0, 0.0),
-                      end: FractionalOffset(1.0, 1.0),
-                      stops: [0.0, 1.0],
-                      tileMode: TileMode.clamp
-                    )
-                  ),
+                      gradient: LinearGradient(
+                          colors: [Colors.white, Colors.white10],
+                          begin: FractionalOffset(0.0, 0.0),
+                          end: FractionalOffset(1.0, 1.0),
+                          stops: [0.0, 1.0],
+                          tileMode: TileMode.clamp)),
                   width: 100.0,
                   height: 1.0,
                 )
-            ],),
-          ), 
+              ],
+            ),
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -334,45 +330,77 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
                   child: Container(
                     padding: EdgeInsets.all(15.0),
                     decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white
-                    ),
-                    child: Icon(
-                      FontAwesomeIcons.facebookF,
-                      color: Color(0xFF0084FF)
-                    ),
+                        shape: BoxShape.circle, color: Colors.white),
+                    child: Icon(FontAwesomeIcons.facebookF,
+                        color: Color(0xFF0084FF)),
                   ),
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(top: 10.0, right: 40.0),
+                padding: EdgeInsets.only(top: 10.0),
                 child: GestureDetector(
                   onTap: () => _showInSnackBar('Google Button Pressed'),
                   child: Container(
                     padding: EdgeInsets.all(15.0),
                     decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white
-                    ),
-                    child: Icon(
-                      FontAwesomeIcons.google,
-                      color: Color(0xFF0084FF)
-                    ),
+                        shape: BoxShape.circle, color: Colors.white),
+                    child:
+                        Icon(FontAwesomeIcons.google, color: Color(0xFF0084FF)),
                   ),
                 ),
               )
             ],
-          ), 
+          ),
         ],
       ),
     );
   }
 
-  void _onSignInButtonPress() {}
+  Widget _buildSignUp(BuildContext context) {
+    return Container();
+  }
 
-  void _onSignUpButtonPress() {}
+  void _onSignInButtonPress() {
+    _pageController.animateToPage(1,
+        duration: Duration(milliseconds: 500), curve: Curves.decelerate);
+  }
 
-  void _toggleLogin() {}
+  void _onSignUpButtonPress() {
+    _pageController?.animateToPage(1,
+        duration: Duration(microseconds: 500), curve: Curves.decelerate);
+  }
 
-  void _showInSnackBar(String message) {}
+  void _toggleLogin() {
+    setState(() {
+      _obscureTextLogin = !_obscureTextLogin;
+    });
+  }
+
+  void _toggleSignup() {
+    setState(() {
+      _obscureTextSignup = !_obscureTextSignup;
+    });
+  }
+
+  void _toggleSignupConfirm() {
+    setState(() {
+      _obscureTextSignupConfirm = !_obscureTextSignupConfirm;
+    });
+  }
+
+  void _showInSnackBar(String value) {
+    _scaffoldKey.currentState?.removeCurrentSnackBar();
+    _scaffoldKey.currentState.showSnackBar(SnackBar(
+      content: Text(
+        value,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+            color: Colors.white,
+            fontSize: 16.0,
+            fontFamily: 'WorkSansSemiBold'),
+      ),
+      backgroundColor: Colors.blue,
+      duration: Duration(seconds: 3),
+    ));
+  }
 }
