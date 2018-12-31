@@ -12,10 +12,17 @@ class CommonWidgets {
           title: Text('Choose'),
         ),
         ListTile(
-          leading: Icon(Icons.edit),
-          title: Text('Manage Products'),
+          leading: Icon(Icons.book),
+          title: Text('Book Shelf'),
           onTap: () {
             Navigator.pushReplacementNamed(context, '/');
+          },
+        ),
+        ListTile(
+          leading: Icon(Icons.person),
+          title: Text('Awesome Login'),
+          onTap: () {
+            Navigator.pushReplacementNamed(context, '/awesome-login');
           },
         )
       ],
