@@ -260,7 +260,109 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
                 ),
               )
             ],
-          ), //Padding(), Padding(), Row(),
+          ), //
+          Padding(
+            padding: EdgeInsets.only(top: 10.0),
+            child: FlatButton(
+              onPressed: () {},
+              child: Text(
+                'Forgot Password?',
+                style: TextStyle(
+                    decoration: TextDecoration.underline,
+                    color: Colors.white,
+                    fontSize: 16.0,
+                    fontFamily: 'WorkSansMedium'),
+              ),
+            ),
+          ), 
+          Padding(
+            padding: EdgeInsets.only(top: 10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.white10,
+                        Colors.white
+                      ],
+                      begin: FractionalOffset(0.0, 0.0),
+                      end: FractionalOffset(1.0, 1.0),
+                      stops: [0.0, 1.0],
+                      tileMode: TileMode.clamp
+                    )
+                  ),
+                  width: 100.0,
+                  height: 1.0,
+                ), 
+                Padding(
+                  padding: EdgeInsets.only(left: 15.0, right: 15.0),
+                  child: Text("Or",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16.0,
+                      fontFamily: 'WorkSansMedium'
+                    ),
+                  ),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.white,
+                        Colors.white10
+                      ],
+                      begin: FractionalOffset(0.0, 0.0),
+                      end: FractionalOffset(1.0, 1.0),
+                      stops: [0.0, 1.0],
+                      tileMode: TileMode.clamp
+                    )
+                  ),
+                  width: 100.0,
+                  height: 1.0,
+                )
+            ],),
+          ), 
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(top: 10.0, right: 40.0),
+                child: GestureDetector(
+                  onTap: () => _showInSnackBar('Facebook Button Pressed'),
+                  child: Container(
+                    padding: EdgeInsets.all(15.0),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white
+                    ),
+                    child: Icon(
+                      FontAwesomeIcons.facebookF,
+                      color: Color(0xFF0084FF)
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 10.0, right: 40.0),
+                child: GestureDetector(
+                  onTap: () => _showInSnackBar('Google Button Pressed'),
+                  child: Container(
+                    padding: EdgeInsets.all(15.0),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white
+                    ),
+                    child: Icon(
+                      FontAwesomeIcons.google,
+                      color: Color(0xFF0084FF)
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ), 
         ],
       ),
     );
