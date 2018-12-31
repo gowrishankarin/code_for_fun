@@ -4,6 +4,8 @@ import '../commons/widgets/common.dart';
 import './theme.dart' as Theme;
 import './bubble_indication_painter.dart';
 
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
 
@@ -77,6 +79,7 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
                     children: <Widget>[
                       ConstrainedBox(
                         constraints: BoxConstraints.expand(),
+                        child: _buildSignIn(context),
                       ),
                       ConstrainedBox(
                         constraints: BoxConstraints.expand(),
@@ -126,9 +129,10 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
                 child: Text(
                   'New',
                   style: TextStyle(
-                      color: right,
-                      fontSize: 16.0,
-                      fontFamily: 'WorkSansSemiBold'),
+                    color: right,
+                    fontSize: 16.0,
+                    fontFamily: 'WorkSansSemiBold',
+                  ),
                 ),
               ),
             )
@@ -142,7 +146,122 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
     return Container(
       padding: EdgeInsets.only(top: 23.0),
       child: Column(
-        children: <Widget>[Stack(), Padding(), Padding(), Row()],
+        children: <Widget>[
+          Stack(
+            alignment: Alignment.topCenter,
+            overflow: Overflow.visible,
+            children: <Widget>[
+              Card(
+                elevation: 2.0,
+                color: Colors.white,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0)),
+                child: Container(
+                  width: 300.0,
+                  height: 190.0,
+                  child: Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(
+                            top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
+                        child: TextField(
+                          keyboardType: TextInputType.emailAddress,
+                          style: TextStyle(
+                            fontFamily: "WorkSansSemiBold",
+                            fontSize: 16.0,
+                            color: Colors.black,
+                          ),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            icon: Icon(
+                              FontAwesomeIcons.envelope,
+                              color: Colors.black,
+                              size: 22.0,
+                            ),
+                            hintText: 'Email Address',
+                            hintStyle: TextStyle(
+                                fontFamily: 'WorkSansSemiBold', fontSize: 17.0),
+                          ),
+                        ),
+                      ),
+                      Container(
+                          width: 250.0, height: 1.0, color: Colors.grey[400]),
+                      Padding(
+                        padding: EdgeInsets.only(
+                            top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
+                        child: TextField(
+                          obscureText: true,
+                          style: TextStyle(
+                              fontFamily: 'WorkSansSemiBold',
+                              fontSize: 16.0,
+                              color: Colors.black),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            icon: Icon(FontAwesomeIcons.lock,
+                                size: 22.0, color: Colors.black),
+                            hintText: 'Password',
+                            hintStyle: TextStyle(
+                                fontFamily: 'WorkSansSemiBold', fontSize: 17.0),
+                            suffixIcon: GestureDetector(
+                              onTap: _toggleLogin,
+                              child: Icon(
+                                FontAwesomeIcons.eye,
+                                size: 15.0,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 170.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                  boxShadow: <BoxShadow>[
+                    BoxShadow(
+                        color: Theme.Colors.loginGradientStart,
+                        offset: Offset(1.0, 6.0),
+                        blurRadius: 20.0),
+                    BoxShadow(
+                        color: Theme.Colors.loginGradientEnd,
+                        offset: Offset(1.0, 6.0),
+                        blurRadius: 20.0)
+                  ],
+                  gradient: LinearGradient(
+                      colors: [
+                        Theme.Colors.loginGradientStart,
+                        Theme.Colors.loginGradientEnd
+                      ],
+                      begin: FractionalOffset(0.2, 0.2),
+                      end: FractionalOffset(1.0, 1.0),
+                      stops: [0.0, 1.0],
+                      tileMode: TileMode.clamp),
+                ),
+                child: MaterialButton(
+                  highlightColor: Colors.transparent,
+                  splashColor: Theme.Colors.loginGradientEnd,
+                  child: Padding(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 42.0),
+                    child: Text(
+                      'LOGIN',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 25.0,
+                        fontFamily: 'WorkSansBold',
+                      ),
+                    ),
+                  ),
+                  onPressed: () => _showInSnackBar('Login Button Pressed'),
+                ),
+              )
+            ],
+          ), //Padding(), Padding(), Row(),
+        ],
       ),
     );
   }
@@ -150,4 +269,8 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
   void _onSignInButtonPress() {}
 
   void _onSignUpButtonPress() {}
+
+  void _toggleLogin() {}
+
+  void _showInSnackBar(String message) {}
 }
