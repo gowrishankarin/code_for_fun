@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'book_shelf.dart';
+import 'book_shelf/book_shelf.dart';
+import 'commons/widgets/common.dart';
 
 void main() => runApp(BookReaderApp());
 
@@ -9,10 +10,13 @@ class BookReaderApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return new MaterialApp(
       title: 'Book Reader',
-      home: BookReaderHomePage(),
-      theme: ThemeData(primarySwatch: Colors.indigo),
+      //home: BookReaderHomePage(),
+      theme: ThemeData(primarySwatch: Colors.lightGreen),
+      routes: {
+        '/': (BuildContext context) => BookReaderHomePage()
+      },
     );
-  }
+  }  
 }
 
 class BookReaderHomePage extends StatefulWidget {
@@ -44,10 +48,19 @@ class _BookReaderHomePageState extends State<BookReaderHomePage>
     super.dispose();
   }
 
+
+
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+    
     return Scaffold(
+      drawer: CommonWidgets.buildSideDrawer(context),
+      appBar: AppBar(
+        title: Text('Fluffy'),
+        actions: <Widget>[
+
+        ],
+      ),
       body: Container(
         color: Colors.lightGreen,
         child: Stack(
@@ -61,7 +74,7 @@ class _BookReaderHomePageState extends State<BookReaderHomePage>
                     child: Container(
                         margin: const EdgeInsets.only(bottom: 20.0),
                         child: Image.asset(
-                          'assets/images/insights_login.png',
+                          'assets/images/owl.png',
                           width: 170.0,
                           height: 170.0,
                           color: Colors.white,

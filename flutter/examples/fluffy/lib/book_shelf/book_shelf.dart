@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 
 import './book_row.dart';
+import '../commons/widgets/common.dart';
 
 class BookShelf extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: CommonWidgets.buildSideDrawer(context),
+      appBar: AppBar(
+        title: Text('Book Shelf'),
+      ),
       body: Container(
         color: Colors.blue[900],
         child: Column(
@@ -16,7 +21,7 @@ class BookShelf extends StatelessWidget {
               child: Container(
                   margin: const EdgeInsets.only(bottom: 20.0),
                   child: Image.asset(
-                    'assets/images/insights_login.png',
+                    'assets/images/owl.png',
                     width: 50.0,
                     height: 50.0,
                     color: Colors.white,
