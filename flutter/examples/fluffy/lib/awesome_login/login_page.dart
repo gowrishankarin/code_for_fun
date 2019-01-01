@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
-import '../commons/widgets/common.dart';
+import 'package:flutter/services.dart'
+    show DeviceOrientation, SystemChrome, TextCapitalization, TextInputType;
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import './theme.dart' as Theme;
 import './bubble_indication_painter.dart';
-
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '../commons/widgets/common.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return _LoginPage();
+    return _LoginPageState();
   }
 }
 
-class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
+class _LoginPageState extends State<LoginPage>
+    with SingleTickerProviderStateMixin {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   bool _obscureTextLogin = true;
@@ -26,6 +28,20 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
 
   Color left = Colors.black;
   Color right = Colors.white;
+
+  @override
+  void initState() {
+    super.initState();
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+    _pageController = PageController();
+  }
+
+  @override
+  void dispose() {
+    _pageController?.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,15 +64,16 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
                 ? MediaQuery.of(context).size.height
                 : 775.0,
             decoration: new BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [
-                      Theme.Colors.loginGradientStart,
-                      Theme.Colors.loginGradientEnd
-                    ],
-                    begin: FractionalOffset(0.0, 0.0),
-                    end: FractionalOffset(1.0, 1.0),
-                    stops: [0.0, 1.0],
-                    tileMode: TileMode.clamp)),
+              gradient: LinearGradient(
+                  colors: [
+                    Theme.Colors.loginGradientStart,
+                    Theme.Colors.loginGradientEnd
+                  ],
+                  begin: FractionalOffset(0.0, 0.0),
+                  end: FractionalOffset(1.0, 1.0),
+                  stops: [0.0, 1.0],
+                  tileMode: TileMode.clamp),
+            ),
             child: Column(
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
@@ -78,15 +95,24 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
                     controller: _pageController,
                     onPageChanged: (i) {
                       if (i == 0) {
-                      } else if (i == 1) {}
+                        setState(() {
+                          right = Colors.white;
+                          left = Colors.black;
+                        });
+                      } else if (i == 1) {
+                        setState(() {
+                          right = Colors.black;
+                          left = Colors.white;
+                        });
+                      }
                     },
                     children: <Widget>[
                       ConstrainedBox(
-                        constraints: BoxConstraints.expand(),
+                        constraints: const BoxConstraints.expand(),
                         child: _buildSignIn(context),
                       ),
                       ConstrainedBox(
-                        constraints: BoxConstraints.expand(),
+                        constraints: const BoxConstraints.expand(),
                         child: _buildSignUp(context),
                       )
                     ],
@@ -160,7 +186,8 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
                 elevation: 2.0,
                 color: Colors.white,
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0)),
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
                 child: Container(
                   width: 300.0,
                   height: 190.0,
@@ -238,8 +265,8 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
                   ],
                   gradient: LinearGradient(
                       colors: [
-                        Theme.Colors.loginGradientStart,
-                        Theme.Colors.loginGradientEnd
+                        Theme.Colors.loginGradientEnd,
+                        Theme.Colors.loginGradientStart
                       ],
                       begin: FractionalOffset(0.2, 0.2),
                       end: FractionalOffset(1.0, 1.0),
@@ -287,12 +314,13 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
               children: <Widget>[
                 Container(
                   decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          colors: [Colors.white10, Colors.white],
-                          begin: FractionalOffset(0.0, 0.0),
-                          end: FractionalOffset(1.0, 1.0),
-                          stops: [0.0, 1.0],
-                          tileMode: TileMode.clamp)),
+                    gradient: LinearGradient(
+                        colors: [Colors.white10, Colors.white],
+                        begin: FractionalOffset(0.0, 0.0),
+                        end: FractionalOffset(1.0, 1.0),
+                        stops: [0.0, 1.0],
+                        tileMode: TileMode.clamp),
+                  ),
                   width: 100.0,
                   height: 1.0,
                 ),
@@ -554,7 +582,7 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
   }
 
   void _onSignInButtonPress() {
-    _pageController.animateToPage(1,
+    _pageController.animateToPage(0,
         duration: Duration(milliseconds: 500), curve: Curves.decelerate);
   }
 
