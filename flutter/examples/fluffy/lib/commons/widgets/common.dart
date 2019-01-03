@@ -24,6 +24,13 @@ class CommonWidgets {
           onTap: () {
             Navigator.pushReplacementNamed(context, '/awesome-login');
           },
+        ),
+        ListTile(
+          leading: Icon(Icons.dashboard),
+          title: Text('Dashboard'),
+          onTap: () {
+            Navigator.pushReplacementNamed(context, '/dashboard');
+          },
         )
       ],
     ));

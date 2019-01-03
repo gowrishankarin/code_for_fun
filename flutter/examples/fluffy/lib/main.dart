@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'book_shelf/book_shelf.dart';
 import 'awesome_login/login_page.dart';
+import 'dashboard/dashboard.dart';
 
 import 'commons/widgets/common.dart';
 
@@ -16,7 +17,8 @@ class BookReaderApp extends StatelessWidget {
       theme: ThemeData(primarySwatch: Colors.lightGreen),
       routes: {
         '/': (BuildContext context) => BookReaderHomePage(),
-        '/awesome-login': (BuildContext context) => LoginPage()
+        '/awesome-login': (BuildContext context) => LoginPage(),
+        '/dashboard': (BuildContext context) => Dashboard()
       },
     );
   }  
