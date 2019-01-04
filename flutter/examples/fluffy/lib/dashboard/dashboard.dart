@@ -4,6 +4,8 @@ import 'package:flutter_sparkline/flutter_sparkline.dart';
 
 import '../commons/widgets/common.dart';
 
+import './shop_item_page.dart';
+
 class Dashboard extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -497,6 +499,7 @@ class _DashboardState extends State<Dashboard> {
                 ],
               ),
             ),
+            onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => ShopItemsPage()))
           )
         ],
         staggeredTiles: [
