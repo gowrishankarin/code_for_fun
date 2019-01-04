@@ -245,114 +245,114 @@ class BadShopItem extends StatelessWidget {
           Align(
             alignment: Alignment.topCenter,
             child: SizedBox.fromSize(
-                size: Size.fromHeight(172.0),
-                child: Stack(
-                  fit: StackFit.expand,
-                  children: <Widget>[
-                    /// Item description inside a material
-                    Container(
-                      margin: EdgeInsets.only(top: 24.0),
-                      child: Material(
-                        elevation: 14.0,
-                        borderRadius: BorderRadius.circular(12.0),
-                        shadowColor: Color(0x802196F3),
-                        color: Colors.transparent,
-                        child: Container(
-                          decoration: BoxDecoration(
-                              gradient: LinearGradient(colors: [
-                            Color(0xFFDA4453),
-                            Color(0xFF89216B)
-                          ])),
-                          child: Padding(
-                            padding: EdgeInsets.all(24.0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                /// Title and rating
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text('Nike Jordan III',
-                                        style: TextStyle(color: Colors.white)),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: <Widget>[
-                                        Text('1.3',
-                                            style: TextStyle(
-                                                color: Colors.amber,
-                                                fontWeight: FontWeight.w700,
-                                                fontSize: 34.0)),
-                                        Icon(Icons.star,
-                                            color: Colors.amber, size: 24.0),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-
-                                /// Infos
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: <Widget>[
-                                    Text('Bought',
-                                        style: TextStyle(color: Colors.white)),
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(horizontal: 4.0),
-                                      child: Text('3',
+              size: Size.fromHeight(172.0),
+              child: Stack(
+                fit: StackFit.expand,
+                children: <Widget>[
+                  /// Item description inside a material
+                  Container(
+                    margin: EdgeInsets.only(top: 24.0),
+                    child: Material(
+                      elevation: 14.0,
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(12.0),
+                      shadowColor: Color(0x802196F3),
+                      //color: Colors.transparent,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [Color(0xFFDA4453), Color(0xFF89216B)],
+                          ),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.all(24.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              /// Title and rating
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text('Nike Jordan III',
+                                      style: TextStyle(color: Colors.white)),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      Text('1.3',
                                           style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w700)),
-                                    ),
-                                    Text('times for a profit of',
-                                        style: TextStyle(color: Colors.white)),
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(horizontal: 4.0),
-                                      child: Material(
-                                        borderRadius:
-                                            BorderRadius.circular(8.0),
-                                        color: Colors.green,
-                                        child: Padding(
-                                          padding: EdgeInsets.all(4.0),
-                                          child: Text('\$ 363',
-                                              style: TextStyle(
-                                                  color: Colors.white)),
-                                        ),
+                                              color: Colors.amber,
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 34.0)),
+                                      Icon(Icons.star,
+                                          color: Colors.amber, size: 24.0),
+                                    ],
+                                  ),
+                                ],
+                              ),
+
+                              /// Infos
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  Text('Bought',
+                                      style: TextStyle(color: Colors.white)),
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 4.0),
+                                    child: Text('3',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w700)),
+                                  ),
+                                  Text('times for a profit of',
+                                      style: TextStyle(color: Colors.white)),
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 4.0),
+                                    child: Material(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      color: Colors.green,
+                                      child: Padding(
+                                        padding: EdgeInsets.all(4.0),
+                                        child: Text('\$ 363',
+                                            style:
+                                                TextStyle(color: Colors.white)),
                                       ),
                                     ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         ),
                       ),
                     ),
+                  ),
 
-                    /// Item image
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: Padding(
-                        padding: EdgeInsets.only(right: 16.0),
-                        child: SizedBox.fromSize(
-                          size: Size.fromRadius(54.0),
-                          child: Material(
-                            elevation: 20.0,
-                            shadowColor: Color(0x802196F3),
-                            shape: CircleBorder(),
-                            child: Image.asset('assets/images/shoes1.png'),
-                          ),
+                  /// Item image
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: Padding(
+                      padding: EdgeInsets.only(right: 16.0),
+                      child: SizedBox.fromSize(
+                        size: Size.fromRadius(54.0),
+                        child: Material(
+                          elevation: 20.0,
+                          shadowColor: Color(0x802196F3),
+                          shape: CircleBorder(),
+                          child: Image.asset('assets/images/shoes1.png'),
                         ),
                       ),
                     ),
-                  ],
-                )),
+                  ),
+                ],
+              ),
+            ),
           ),
 
           /// Review
