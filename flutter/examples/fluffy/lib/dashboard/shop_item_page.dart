@@ -121,6 +121,29 @@ class ShopItem extends StatelessWidget {
                                     
                                   )
                                 ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  Text('Bought', style: TextStyle()),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 4.0),
+                                    child: Text('1,361', style: TextStyle(fontWeight: FontWeight.w700)),
+                                  ),
+                                  Text('times for a profit of', style: TextStyle()),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 4.0),
+                                    child: Material(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      color: Colors.green,
+                                      child: Padding(
+                                        padding: EdgeInsets.all(4.0),
+                                        child: Text('\$ 13K', style: TextStyle(color: Colors.white)),
+                                      ),
+                                    ),
+                                  )
+                                ],
                               )
                             ],
                           )
@@ -128,10 +151,29 @@ class ShopItem extends StatelessWidget {
                       ),
                     ),
                   ),
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: Padding(
+                      padding: EdgeInsets.only(right: 16.0),
+                      child: SizedBox.fromSize(
+                        size: Size.fromRadius(54.0),
+                        child: Material(
+                          elevation: 20.0,
+                          shadowColor: Color(0x802196f3),
+                          shape: CircleBorder(),
+                          child: Image.asset('assets/images/shoes1.png')
+                        )
+                      )
+                    ),
+                  )
                 ],
               ),
             ),
           ),
+          Padding(
+            padding: EdgeInsets.only(top: 160.0, left: 32.0),
+            child: Material(),
+          )
         ],
       ),
     );
