@@ -18,3 +18,9 @@ function compare(a1, a2) {
 }
 
 compare(array_1, array_2);
+
+function compare2(a1, a2) {
+    return a1.some(item => a2.includes(item));
+}
+
+compare2(array_1, array_2);
