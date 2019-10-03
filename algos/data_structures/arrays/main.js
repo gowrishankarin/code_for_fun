@@ -14,3 +14,5 @@ console.log(array);
 
 array.splice(2, 0, 'alien');
 console.log(array);
+
+array = ['1', '2']
