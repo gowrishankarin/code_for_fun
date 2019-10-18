@@ -67,6 +67,25 @@ class DoublyLinkedList {
         this.length++;
     }
 
+    remove(index) {
+        if(index == 0) {
+            this.head = this.head.next;
+            this.head.prev = null;
+            this.length--;
+            return;
+        }
+
+        if(index >= this.lengths) {
+            return;
+        }
+
+        let currentNode = this.traverseToIndex(index - 1);
+        let nextNode = currentNode.next;
+        currentNode.next = nextNode.next;
+        nextNode.next.prev = currentNode;
+
+    }
+
     printAll() {
         console.log('Length: ' + this.length);
         let currentNode = this.head;
@@ -99,7 +118,9 @@ const myLinkedList1 = new DoublyLinkedList(10);
  myLinkedList1.insert(5, 35);
  myLinkedList1.insert(4, 25);
 
- let array = myLinkedList1.printAll();
- console.log(array);
+let array = myLinkedList1.printAll();
+console.log(array);
 
  console.log(myLinkedList1.printAllRev());
+myLinkedList1.remove(3);
+console.log(myLinkedList1.printAllRev());

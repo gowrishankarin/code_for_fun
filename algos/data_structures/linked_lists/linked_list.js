@@ -73,6 +73,7 @@
     remove(index) {
         if(index == 0) {
             this.head = this.head.next;
+            this.length--;
             return;
         }
 
