@@ -70,6 +70,22 @@
         this.length++;
     }
 
+    remove(index) {
+        if(index == 0) {
+            this.head = this.head.next;
+            return;
+        }
+
+        if(index >= this.length) {
+            // Remove last node
+            return;
+        }
+
+        let currentNode = this.traverseToIndex(index - 1);
+        currentNode.next = currentNode.next.next;
+        this.length--;
+    }
+
     printAll() {
         console.log('Length: ' + this.length);
         let currentNode = this.head;
@@ -90,5 +106,11 @@
  myLinkedList1.insert(5, 35);
  myLinkedList1.insert(4, 25);
 
- let array = myLinkedList1.printAll()
+ let array = myLinkedList1.printAll();
  console.log(array);
+ myLinkedList1.remove(0);
+ console.log(myLinkedList1.printAll());
+ myLinkedList1.remove(3);
+ console.log(myLinkedList1.printAll());
+
+
