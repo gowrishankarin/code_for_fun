@@ -86,6 +86,20 @@ class DoublyLinkedList {
 
     }
 
+    reverse() {
+
+        let currentNode = this.tail;
+        while(currentNode) {
+            let thisNode = currentNode;
+            currentNode = currentNode.prev;
+
+            currentNode.next = currentNode;
+            thisNode.prev = currentNode;
+        }
+
+
+    }
+
     printAll() {
         console.log('Length: ' + this.length);
         let currentNode = this.head;
@@ -124,3 +138,6 @@ console.log(array);
  console.log(myLinkedList1.printAllRev());
 myLinkedList1.remove(3);
 console.log(myLinkedList1.printAllRev());
+
+myLinkedList1.reverse();
+console.log(myLinkedList1.printAll());
