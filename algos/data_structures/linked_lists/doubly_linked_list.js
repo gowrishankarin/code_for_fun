@@ -88,14 +88,25 @@ class DoublyLinkedList {
 
     reverse() {
 
-        let currentNode = this.tail;
-        while(currentNode) {
-            let thisNode = currentNode;
-            currentNode = currentNode.prev;
-
-            currentNode.next = currentNode;
-            thisNode.prev = currentNode;
+        if(!this.head.next) {
+            return this.head;
         }
+
+        let first = this.head;
+        this.tail = this.head;
+        let second = first.next;
+        while(second) {
+            // Get the node to be swapped
+            let tmp = second.next;
+            second.next = first;
+            first = second;
+            second = tmp;
+            
+            
+        }
+
+        this.head.next = null;
+        this.head = first;
 
 
     }
