@@ -53,7 +53,35 @@ class BinarySearchTree {
     }
 
     remove() {
+        if(!this.root) {
+            return undefined;
+        }
+        let currentNode = this.root;
+        let parentNode = null;
+        while(currentNode) {
+            if(value < currentNode.value) {
+                parentNode = currentNode;
+                currentNode = currentNode.left;
+            } else if(value > currentNode.value) {
+                parentNode = currentNode;
+                currentNode = currentNode.right;
+            } else if(value === currentNode.value) {
+                // Option 1: No Right Child
+                if(currentNode.right === null) {
 
+
+                // Option2: Right child which does not have a left child
+                } else if(currentNode.right.left === null) {
+                    
+
+                // Option 3: Right child that has a left child
+                } else {
+
+
+                }
+            }
+        }
+        return undefined;
     }
 }
 
