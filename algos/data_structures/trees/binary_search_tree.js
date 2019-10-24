@@ -52,7 +52,7 @@ class BinarySearchTree {
         return undefined;
     }
 
-    remove() {
+    remove(value) {
         if(!this.root) {
             return undefined;
         }
@@ -103,7 +103,7 @@ class BinarySearchTree {
                     // Find the right child's left most child
                     let leftmost = currentNode.right.left;
                     let leftmostParent = currentNode.right;
-                    while(leftmost.left != null) {
+                    while(leftmost.left !== null) {
                         leftmostParent = leftmost;
                         leftmost = leftmost.left;
                     }
