@@ -16,6 +16,20 @@ class Graph {
     }
 
     showConnections() {
+
+        function getEdges(edges) {
+            let output = '';
+            for(let i= 0; i < edges.length; i++) {
+                output = output + ' ' + edges[i];
+            }
+            return output;
+        }
+
+        let that = this;
+        Object.keys(this.adjacentList).forEach(function(key) {
+            console.log(key + ' --> ' + getEdges(that.adjacentList[key]));
+        });
+
         return this.adjacentList;
     }
 
@@ -29,12 +43,14 @@ myGraph.addVertex('3');
 myGraph.addVertex('4');
 myGraph.addVertex('5');
 myGraph.addVertex('6');
+myGraph.showConnections();
 myGraph.addEdge('3', '1');
 myGraph.addEdge('3', '4');
 myGraph.addEdge('4', '2');
 myGraph.addEdge('4', '5');
 myGraph.addEdge('1', '2');
 myGraph.addEdge('1', '0');
+myGraph.showConnections();
 myGraph.addEdge('0', '2');
 myGraph.addEdge('6', '5');
-console.log(myGraph.showConnections());
+myGraph.showConnections();
