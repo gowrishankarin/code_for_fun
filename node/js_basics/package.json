@@ -1,0 +1,15 @@
+{
+  "name": "coding-train",
+  "version": "0.0.1",
+  "description": "JS for Dummies",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Gowri Shankar",
+  "license": "ISC",
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-node6": "^11.0.0"
+  }
+}
