@@ -16,23 +16,6 @@ class Vertex {
 
 class Graph {
     constructor(isUndirected) {
-        this.adjLists = [];
-
-        this.isUndirected = isUndirected;
-
-
-
-
-    }
-
-    
-
-
-
-}
-
-class Graph {
-    constructor(isUndirected) {
         this.numberOfNodes = 0;
         this.adjacentList = {};
         this.isUndirected = isUndirected;
@@ -67,15 +50,26 @@ class Graph {
     }
 
     indexForName(name) {
-
+        //for(let i=0; i < this.adjacentList.length; i++) {
+            if(this.adjacentList[name] !== null) {
+                return true;
+            }
+        //}
     }
 
     dfs(v, isVisited) {
+        visited[v] = true;
+        
 
     }
 
     dfs_main() {
-
+        let visited = [];
+        for(let i=0; i < Object.keys(this.adjacentList).length; i++) {
+            if(!visited[i]) {
+                this.dfs(i, visited);
+            }
+        }
     }
 
     print() {
