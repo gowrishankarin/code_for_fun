@@ -31,14 +31,17 @@ export class ProductService {
         }));
     }
 
-    getSingleProduct(productId: string) {
-        const product = this.productModel.findProduct(
-
-        ).find((prod) => prod.id == productId);
+    async getSingleProduct(productId: string): Promise<Product> {
+        const product = await this.productModel.findById(productId).exec();
         if(!product) {
             throw new NotFoundException('Could not find product.');
         }
-        return { ...product };
+        return {
+            id: product.id, 
+            title: product.title, 
+            description: product.description, 
+            price: product.price
+        };
     }
 
     private findProduct(id: string): [Product, number] {
