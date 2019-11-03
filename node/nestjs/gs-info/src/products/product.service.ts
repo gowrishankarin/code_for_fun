@@ -15,7 +15,7 @@ export class ProductService {
     }
 
     async insertProduct(title: string, desc: string, price: number) :Promise<string> {
-        const newProduct =  this.productModel({title: title, description: desc, price: price});
+        const newProduct =  new this.productModel({title: title, description: desc, price: price});
         const result = await newProduct.save();
         
         return result.id as string;
@@ -31,32 +31,34 @@ export class ProductService {
         }));
     }
 
-    async getSingleProduct(productId: string): Promise<Product> {
-        const product = await this.productModel.findById(productId).exec();
+    async getProduct(productId: string): Promise<Product> {
+        let product;
+        try {
+            product = await this.productModel.findById(productId).exec();
+        } catch(error) {
+            throw new NotFoundException('Could not find product.');
+        }
+        
         if(!product) {
             throw new NotFoundException('Could not find product.');
         }
+
+        return product;
+    }
+
+    async getSingleProduct(productId: string) {
+        const product = await this.getProduct(productId);
         return {
-            id: product.id, 
-            title: product.title, 
-            description: product.description, 
+            id: product.id,
+            title: product.title,
+            description: product.description,
             price: product.price
         };
     }
-
-    private findProduct(id: string): [Product, number] {
-        const productIndex = this.products.findIndex(prod => prod.id === id);
-        const product = this.products[productIndex];
-        if(!product) {
-            throw new NotFoundException('Could not find product');
-        }
-        return [product, productIndex];
-    }
  
-    updateProduct(productId: string, title: string, desc: string, price: number) {
-        const [product, index] = this.findProduct(productId);
-        const updatedProduct = {...product};
-
+    async updateProduct(productId: string, title: string, desc: string, price: number) {
+        const updatedProduct = await this.getProduct(productId);
+        
         if (title) {
             updatedProduct.title = title;
         }
@@ -67,11 +69,11 @@ export class ProductService {
         if(price) {
             updatedProduct.price = price;
         }
-        this.products[index] = updatedProduct;
+        updatedProduct.save();
     }
 
     deleteProduct(productId: string) {
-        const [product, index] = this.findProduct(productId);
-        this.products.splice(index, 1);
+        // const [product, index] = this.getPRoduct(productId);
+        // this.products.splice(index, 1);
     }
 }
