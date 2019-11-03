@@ -14,19 +14,27 @@ export class ProductService {
 
     }
 
-    async insertProduct(title: string, desc: string, price: number) {
+    async insertProduct(title: string, desc: string, price: number) :Promise<string> {
         const newProduct =  this.productModel({title: title, description: desc, price: price});
         const result = await newProduct.save();
         
         return result.id as string;
     }
 
-    fetchProducts() {
-        return [...this.products];
+    async fetchProducts() {
+        const products = await this.productModel.find().exec();
+        return products.map((prod) => ({
+            id: prod.id, 
+            title: prod.title, 
+            description: prod.description, 
+            price: prod.price
+        }));
     }
 
     getSingleProduct(productId: string) {
-        const product = this.products.find((prod) => prod.id == productId);
+        const product = this.productModel.findProduct(
+
+        ).find((prod) => prod.id == productId);
         if(!product) {
             throw new NotFoundException('Could not find product.');
         }
