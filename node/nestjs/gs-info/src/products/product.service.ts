@@ -7,10 +7,9 @@ import { Product } from './product.model';
 @Injectable()
 export class ProductService {
     private products: Product[] = [];
-    private readonly productModel: Model<Product>;
-
-    consturctor(
-        @InjectModel('Product')  productModel: Model<Product>
+    
+    constructor(
+        @InjectModel('Product')  private readonly productModel: Model<Product>
     ) {
 
     }
@@ -18,8 +17,8 @@ export class ProductService {
     async insertProduct(title: string, desc: string, price: number) {
         const newProduct =  this.productModel({title: title, description: desc, price: price});
         const result = await newProduct.save();
-        console.log(result);
-        return 'prodId';
+        
+        return result.id as string;
     }
 
     fetchProducts() {

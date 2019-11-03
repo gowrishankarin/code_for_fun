@@ -8,17 +8,13 @@ export class ProductsController {
     }
 
     @Post()
-    addProduct(
-        @Body() completeBody: {
-            title: string, 
-            description: string, 
-            prodPrice: number
-        }
+    async addProduct(
+        @Body('title') prodTitle: string, 
+        @Body('description') description: string, 
+        @Body('price') prodPrice: number
+    ) {
 
-    ): any {
-        const generatedId = this.productsService.insertProduct(
-            completeBody.title, completeBody.description, completeBody.prodPrice);
-
+        const generatedId = await this.productsService.insertProduct(prodTitle, description, prodPrice);
         return {
             id: generatedId
         };
