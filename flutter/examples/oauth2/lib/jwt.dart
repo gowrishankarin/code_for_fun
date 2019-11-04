@@ -11,7 +11,7 @@ class JWTToken {
       ..setClaim('data', {'email': 'gowrishankar.m@ivymobility.com'})
       ..getToken();
 
-    var signer = JWTHmacSha256Signer(CONFIGURATIONS.googleSecret);
+    var signer = JWTHmacSha256Signer(CONFIGURATIONS.googleAppId);
     var signedToken = builder.getSignedToken(signer);
 
     return signedToken.toString();
