@@ -5,5 +5,6 @@ import { Component } from '@angular/core';
     templateUrl: './server.component.html'
 })
 export class ServerComponent {
-
+    private serverId: number = 10;
+    private serverStatus: string = 'offline';
 }

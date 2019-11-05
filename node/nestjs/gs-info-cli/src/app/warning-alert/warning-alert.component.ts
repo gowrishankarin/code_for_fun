@@ -9,7 +9,9 @@ import { Component, OnInit } from '@angular/core';
   // This overrides the stylesheet file
   styles: [`
     h5 {
-      color: crimson; 
+      padding: 20px;
+      background-color: mistyrose;
+      border: 1px solid red;
     }
   `]
 })
