@@ -144,16 +144,33 @@ class BinarySearchTree {
         return this.inOrder(this.root, []);
     }
 
-    preOrder() {
-
+    preOrder(node, list) {
+        list.push(node.value);
+        if(node.left) {
+            this.preOrder(node.left, list)
+        }
+        
+        if(node.right) {
+            this.preOrder(node.right, list)
+        }
+        return list;
     }
 
     dfsPreOrder() {
         return this.preOrder(this.root, []);
     }
 
-    postOrder() {
-
+    postOrder(node, list) {
+        
+        if(node.left) {
+            this.postOrder(node.left, list);
+        }
+        
+        if(node.right) {
+            this.postOrder(node.right, list)
+        } 
+        list.push(node.value);
+        return list;
     }
 
     dfsPostOrder() {
