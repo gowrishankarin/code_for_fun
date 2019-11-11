@@ -129,12 +129,19 @@ class BinarySearchTree {
         }
     }
 
-    inOrder() {
-
+    inOrder(node, list) {
+        if(node.left) {
+            this.inOrder(node.left, list)
+        }
+        list.push(node.value);
+        if(node.right) {
+            this.inOrder(node.right, list)
+        }
+        return list;
     }
 
     dfsInOrder() {
-        return inOrder(this.root, []);
+        return this.inOrder(this.root, []);
     }
 
     preOrder() {
@@ -142,15 +149,15 @@ class BinarySearchTree {
     }
 
     dfsPreOrder() {
-        return preOrder(this.root, []);
+        return this.preOrder(this.root, []);
     }
 
     postOrder() {
-        
+
     }
 
     dfsPostOrder() {
-        return postOrder(this.root, []);
+        return this.postOrder(this.root, []);
     }
 }
 
@@ -172,14 +179,6 @@ tree.insert(1);
 tree.insert(6);
 tree.insert(15);
 tree.insert(170);
-console.log(JSON.stringify(traverse(tree.root)));
-console.log(tree.lookup(1));
-console.log(tree.lookup(6));
-console.log(tree.lookup(16));
-console.log(tree.lookup(20));
-
-tree.breadthFirstSearch();
-tree.breadthFirstSearchRecursive([tree.root], []);
 
 //      9
 //  4       20
@@ -189,5 +188,14 @@ let inOrder = [1, 4, 6, 9, 15, 20, 170]
 let preOrder = [9, 4, 1, 6, 20, 15, 170] // To recreate a tree
 let postOrder = [1, 6, 4, 15, 170, 20, 9]
 
-tree.remove(170);
-console.log(tree.lookup(170));
+console.log("In Order:")
+console.log(inOrder);
+console.log(tree.dfsInOrder());
+
+console.log("Pre Order:")
+console.log(preOrder);
+console.log(tree.dfsPreOrder());
+
+console.log("Post Order:")
+console.log(postOrder);
+console.log(tree.dfsPostOrder());

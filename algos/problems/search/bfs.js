@@ -148,6 +148,7 @@ class BinarySearchTree {
                 queue.push(currentNode.right);
             }
         }
+        return list;
     }
 
     breadthFirstSearchRecursive(queue, list) {
@@ -188,15 +189,8 @@ tree.insert(1);
 tree.insert(6);
 tree.insert(15);
 tree.insert(170);
-console.log(JSON.stringify(traverse(tree.root)));
-console.log(tree.lookup(1));
-console.log(tree.lookup(6));
-console.log(tree.lookup(16));
-console.log(tree.lookup(20));
 
-tree.breadthFirstSearch();
-tree.breadthFirstSearchRecursive([tree.root], []);
+console.log(tree.breadthFirstSearch());
+console.log(tree.breadthFirstSearchRecursive([tree.root], []));
 
 
-tree.remove(170);
-console.log(tree.lookup(170));
