@@ -1,0 +1,16 @@
+SQL - Structured Query Language
+
+DDL - Database Definition Language
+CREATE, DROP, ALTER, TRUNCATE, COMMENT, RENAME
+
+DML - Database Manipulation Language
+UPDATE, INSERT, DELETE
+
+DQL - Database Query Language
+SELECT
+
+DCL - Database Control Language
+GRANT, REVOKE
+
+TCL - Transaction Control Language
+COMMIT, ROLLBACK, SAVEPOINT, SET TRANSACTION
