@@ -14,3 +14,24 @@ GRANT, REVOKE
 
 TCL - Transaction Control Language
 COMMIT, ROLLBACK, SAVEPOINT, SET TRANSACTION
+
+20th Nov 2019
+Relational
+Normalized & Denormalized
+ACID - Atomicity, Consistency, Isolation, Durability
+Primary Key
+Foreign Key
+ETL 
+BLOB - Binary Large Object, 4GB Binary Data, Photos, Videos etc
+CLOB - Character Large Object, 4GB of Character Data - A Web page, a CSV file
+
+Apache Impala Data Types
+- INT, TINYINT, SMALLINT, BIGINT
+- FLOAT, DOUBLE, REAL 
+- DECIMAL(precision, scale)
+- STRING, CHAR(lenght, upto 255), VARCHAR(length, up to 65535)
+- TIMESTAMP
+- BOOLEAN
+
+Not Support in Impala
+- BLOB and CLOB
