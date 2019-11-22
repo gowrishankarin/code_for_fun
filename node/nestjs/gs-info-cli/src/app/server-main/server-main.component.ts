@@ -6,8 +6,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./server-main.component.scss']
 })
 export class ServerMainComponent implements OnInit {
-
-  serverElements = [];
+  
+  serverElements = [{
+    type: 'server', name: 'Test Server', content: 'Just a Test!'
+  }];
   newServerName = '';
   newServerContent = '';
 
@@ -15,21 +17,4 @@ export class ServerMainComponent implements OnInit {
 
   ngOnInit() {
   }
-
-  onAddServer() {
-    this.serverElements.push({
-      type: 'server',
-      name: this.newServerName,
-      content: this.newServerContent
-    });
-  }
-
-  onAddBlueprint() {
-    this.serverElements.push({
-      type: 'blueprint',
-      name: this.newServerName,
-      content: this.newServerContent
-    })
-  }
-
 }
