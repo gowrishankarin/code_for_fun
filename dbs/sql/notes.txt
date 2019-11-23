@@ -35,3 +35,24 @@ Apache Impala Data Types
 
 Not Support in Impala
 - BLOB and CLOB
+
+21st Nov 2019
+- Primary Keys
+- Foreign Keys
+- Strategies of Schema Design: a. Normalization b. De-Normalization
+- Database Normalization
+    a, 1NF, 2NF, ... 7NF -> {1st Normal Form, 2nd Normal Form ...}
+- 3rd Normal Forms is Normal
+    a. Primary Key
+    b. Atomic Columns
+    c. No Repeating Groups
+    d. Non-Key Columns describe only the whole Key
+    e. No derived columns
+
+23rd Nov 2019
+Normalization and Denormalization
+- Differences
+    a. Limiting Data Anomalies
+    b. Enforcing Data Structure
+    c. Size
+    d. SELECT speed
