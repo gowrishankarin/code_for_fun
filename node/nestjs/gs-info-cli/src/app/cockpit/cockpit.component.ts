@@ -22,14 +22,14 @@ export class CockpitComponent implements OnInit {
     console.log(this.serverContentInput);
     this.serverCreated.emit({
       serverName: nameInput.value,
-      serverContent: this.serverContentInput.native.value
+      serverContent: this.serverContentInput.nativeElement.value
     });
   }
 
   onAddBlueprint(nameInput: HTMLInputElement) {
     this.bpCreated.emit({
       serverName: nameInput.value,
-      serverContent: this.serverContentInput.native.value
+      serverContent: this.serverContentInput.nativeElement.value
     });
   }
 }
