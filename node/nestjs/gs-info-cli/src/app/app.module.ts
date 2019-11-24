@@ -44,3 +44,13 @@ import { ServerElementComponent } from './server-element/server-element.componen
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+/*
+ngOnChanges  - Called after a bound input property changes
+ngOnInit - Called once the component is initialized
+ngDoCheck - Called during every change detection run
+ngAfterContentInit - Called after content has been projected into view
+ngAfterViewInit - Called after the component's view(and child views) has been initialized
+ngAfterViewChecked - Called every time the view(and child views) have been checked
+ngOnDestroy - Called once the component is about to be destroyed
+*/

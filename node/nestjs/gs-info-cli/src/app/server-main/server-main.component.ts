@@ -38,4 +38,12 @@ export class ServerMainComponent implements OnInit {
       content: blueprintData.serverContent
     });
   }
+
+  onChangeFirst() {
+    this.serverElements[0].name = 'Changed!';
+  }
+
+  onDeleteFirst() {
+    this.serverElements.splice(0, 1);
+  }
 }
