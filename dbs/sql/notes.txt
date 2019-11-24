@@ -1,7 +1,7 @@
 SQL - Structured Query Language
 
 DDL - Database Definition Language
-CREATE, DROP, ALTER, TRUNCATE, COMMENT, RENAME
+CREATE, DROP, ALTER, TRUNCATE, COMMENT, RENAME, {CREATE TRIGGER}
 
 DML - Database Manipulation Language
 UPDATE, INSERT, DELETE
@@ -56,3 +56,27 @@ Normalization and Denormalization
     b. Enforcing Data Structure
     c. Size
     d. SELECT speed
+
+24th Nov 2019
+Database Transactions
+DML 
+    - INSERT, UPDATE, DELETE
+    - START TRANSACTION, COMMIT, ROLLBACK
+ACID
+    - Atomicity, 
+    - Consistency
+    - Isolation
+    - Durability
+TRIGGERS
+    - Complex Business Rules
+    - Cascading DML
+STORED PROCEDURES
+    - Routines in the Database
+OLTP - Online Transaction Processing 
+    - CRUD
+    - ACID Compliant Transaction
+    - Enforcement of Business Rules
+Analytic Database
+    - ETL: Extract, Transform and Load 
+    - Data Warehouse 
+    
