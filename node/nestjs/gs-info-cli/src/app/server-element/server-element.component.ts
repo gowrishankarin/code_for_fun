@@ -8,7 +8,10 @@ import {
   DoCheck,
   AfterContentInit,
   AfterContentChecked,
-  OnDestroy
+  OnDestroy,
+  ViewChild,
+  ElementRef,
+  ContentChild
 } from '@angular/core';
 
 @Component({
@@ -31,6 +34,8 @@ OnDestroy {
     content: string
   };
   @Input() name: string;
+  @ViewChild('heading', {static: true}) header: ElementRef;
+  @ContentChild('contentParagraph', {static: true}) paragraph: ElementRef;
 
   constructor() { }
 
@@ -40,6 +45,8 @@ OnDestroy {
 
   ngOnInit() {
     console.log('Constructor Logged');
+    console.log('Text Content: ' + this.header.nativeElement.textContent);
+    console.log('Paragraph Content: ' + this.paragraph.nativeElement.textContent);
   }
 
   ngDoCheck() {
@@ -60,6 +67,8 @@ OnDestroy {
 
   ngAfterViewChecked() {
     console.log('ng after view checked');
+    console.log('Text Content: ' + this.header.nativeElement.textContent);
+    console.log('Paragraph Content: ' + this.paragraph.nativeElement.textContent);
   }
 
   ngOnDestroy() {
