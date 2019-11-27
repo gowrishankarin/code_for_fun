@@ -7,9 +7,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EvenComponent implements OnInit {
 
+  oddElements = [];
+
   constructor() { }
 
   ngOnInit() {
   }
 
+  onTick() {
+    this.oddElements.push({
+      eventId: 1
+    });
+  }
 }
