@@ -7,8 +7,4 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'GS Information Client!';
-
-  onTick(event: Event) {
-    console.log(event['eventId']);
-  }
 }

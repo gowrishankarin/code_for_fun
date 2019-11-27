@@ -7,9 +7,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GameComponent implements OnInit {
 
+  oddTicks: number[] = [];
+  evenTicks: number[] = [];
+
   constructor() { }
 
   ngOnInit() {
   }
 
+  onTick(event: Event) {
+    console.log(event['eventId']);
+    if(event['eventId'] % 2 === 0) {
+      this.evenTicks.push(event['eventId']); 
+    } else {
+      this.oddTicks.push(event['eventId']); 
+    }
+  }
 }

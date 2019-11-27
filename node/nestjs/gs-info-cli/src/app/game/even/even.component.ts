@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-even',
@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EvenComponent implements OnInit {
 
+  @Input() tick: number;
   oddElements = [];
 
   constructor() { }
@@ -14,7 +15,8 @@ export class EvenComponent implements OnInit {
   ngOnInit() {
   }
 
-  onTick() {
+  onTick(event: Event) {
+    console.log(event);
     this.oddElements.push({
       eventId: 1
     });
