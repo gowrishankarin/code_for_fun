@@ -7,7 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class EvenComponent implements OnInit {
 
-  @Input() tick: number;
+  @Input('tick') evenTick: number;
   oddElements = [];
 
   constructor() { }
