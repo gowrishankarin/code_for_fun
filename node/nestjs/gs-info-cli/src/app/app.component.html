@@ -1,23 +1,26 @@
-<app-header></app-header>
+<app-header (featureSelected)="onNavigate($event)"></app-header>
 <!--<h3>This is App Component</h3>
 <hr>
 <app-servers></app-servers>
 <div app-warning-alert></div>
 <div class="app-success-alert"></div>-->
 <div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <app-recipes></app-recipes>
-            <app-shopping-list></app-shopping-list>
-        <div>
+  <div class="row">
+    <div class="col-md-12">
+      <app-recipes *ngIf="loadedFeature === 'recipe'"></app-recipes>
+      <app-shopping-list *ngIf="loadedFeature !== 'recipe'"></app-shopping-list>
+      <div>
+      </div>
     </div>
+  </div>
 </div>
-
 <div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <!-- <app-server-main></app-server-main> -->
-            <app-game></app-game>
-        <div>
+  <div class="row">
+    <div class="col-md-12">
+      <!-- <app-server-main></app-server-main> -->
+      <app-game></app-game>
+      <div>
+      </div>
     </div>
+  </div>
 </div>
