@@ -1,0 +1,72 @@
+Fun Database Overview  
+-------------------------------------------------------------
+Gowri Shankar  
+3rd Dec 2019 
+Database: Fun
+-------------------------------------------------------------
+Notes:  
+- Tables and their column description are the outcome of the exploration of the db in Hue, It may not represent the real content.
+- Assumed relationship of primary key and foreign key constraints are presented
+-------------------------------------------------------------
+
+Tables
+> card_rank: Table specifying rank and value of each card from ACE to King  
+> card_suit: Specification of Suit{Clubs, Diamonds, Hearts, Spades} and their colors {Black, Red}  
+> games: Details of the 5 games played  
+> inventory: Inventory detail of various games at 2 different shops  
+-------------------------------------------------------------
+Table: card_rank
+Columns 
+    	Name    Type 	    Description
+1   	rank    string 	    PK*, Rank is a unique value range {2 -10, Ace, Jack, King, Queen}
+2 	value 	tinyint	    Value of the card
+Sample  
+    	rank 	value
+1 	Ace 	NULL
+2 	2 	2
+3 	3 	3
+-------------------------------------------------------------
+Table: card_suit
+Columns 
+    	Name    Type 	    Description
+1   	suit    string 	    PK* {Clubs, Diamonds, Hearts, Spades }
+2 	color 	string      Color options {Black and Red }		
+Sample  
+    	suit 	    	color
+1	Clubs	    	Black
+2	Diamonds	Red
+3	Hearts	    	Red
+4	Spades	    	Black
+-------------------------------------------------------------
+Table: games
+Columns  
+    Name 	    	Type 	    Description
+1 	id 	    	int 	    PK*
+2 	name 	    	string      Name of the game
+3 	inventor	string 	    Inventor of the Game
+4 	year 	    	string 	    Year of release
+5 	min_age 	tinyint     Minimum player age 	
+6 	min_players 	tinyint     Minimum number of players required 	
+7 	max_players 	tinyint     Maximum number of players this game can accommodate
+Sample  
+id	name		inventor 	        year 	min_age 	min_players 	max_players 	list_price
+1	Monopoly 	Elizabeth Magie 	1903 	8 	        2 	            6 	            19.99
+2	Scrabble 	Alfred Mosher Butts 	1938 	8 	        2 	            4 	            17.99
+3	Clue 	    	Anthony E. Pratt 	1944 	8 	        2 	            6 	            9.99
+-------------------------------------------------------------
+Table: inventory
+Columns  
+Name 	Type 	Comment		Description
+1 	shop 	string		Name of the shop 	
+2 	game 	string 		Name of the game
+3 	qty 	int 		Quantity of the game in inventory
+4 	aisle 	tinyint 	Information about where it is kept
+5 	price 	decimal(5,2) 	Price of the game
+
+Sample  
+    	shop 	    	game 	    	qty 	aisle 	price
+1 	Dicey 	    	Monopoly 	7	3	17.99
+2 	Dicey 	    	Clue 	    	3	NULL 	9.99
+3 	Board 'Em 	Monopoly 	11	2	25.00
+
+-------------------------------------------------------------
