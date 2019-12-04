@@ -15,14 +15,14 @@ export class RecipeListComponent implements OnInit {
       "https://cdn.pixabay.com/photo/2016/06/15/19/09/food-1459693_960_720.jpg"
     ),
     new Recipe(
-      "A Test Recipe",
-      "This is a test recipe",
-      "https://cdn.pixabay.com/photo/2016/06/15/19/09/food-1459693_960_720.jpg"
+      "Not a Test",
+      "This is not a test recipe",
+      "https://cdn.pixabay.com/photo/2016/04/23/22/35/healthy-food-1348430_960_720.jpg"
     ),
     new Recipe(
-      "A Test Recipe",
-      "This is a test recipe",
-      "https://cdn.pixabay.com/photo/2016/06/15/19/09/food-1459693_960_720.jpg"
+      "A New Recipe",
+      "This is a new recipe",
+      "https://www.army.mil/e2/c/images/2015/10/30/414509/size0.jpg"
     )
   ];
   constructor() {}
