@@ -23,6 +23,7 @@ import { OddComponent } from "./game/odd/odd.component";
 import { EvenComponent } from "./game/even/even.component";
 import { BasicHighlightDirective } from "./commons/basic-highlight/basic-highlight.directive";
 import { BetterHighlightDirective } from "./commons/better-highlight/better-highlight.directive";
+import { UnlessDirective } from "./commons/unless/unless.directive";
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { BetterHighlightDirective } from "./commons/better-highlight/better-high
     OddComponent,
     EvenComponent,
     BasicHighlightDirective,
-    BetterHighlightDirective
+    BetterHighlightDirective,
+    UnlessDirective
   ],
   imports: [BrowserModule, FormsModule],
   providers: [],
