@@ -11,7 +11,9 @@
     ></app-recipe-detail>
     <ng-template #infoText>
       <p appBasicHighlight>Please select a Recipe!</p>
-      <p appBetterHighlight>Please select a Recipe!</p>
+      <p appBetterHighlight [defaultColor]="'yellow'" [highlightColor]="'red'">
+        Please select a Recipe!
+      </p>
     </ng-template>
   </div>
 </div>
