@@ -8,6 +8,7 @@ import { Recipe } from "./recipe.model";
 })
 export class RecipesComponent implements OnInit {
   @Input("recipeWasSelected") selectedRecipe: Recipe;
+  value: number = 100;
   constructor() {}
 
   ngOnInit() {}
